@@ -1,0 +1,26 @@
+Register and Login
+    JWT Authentication to connect DRF and React
+    Can login with username or email
+
+Projects(Teams)
+    Create Projects
+    Invite members to join projects via one time link
+    Change member access level - Admin or Normal
+    Admin can edit project details, invite new members, and change other members' access levels.
+
+Boards(Project)
+    Create personal boards or project boards
+    Recently Viewed Boards
+    Starred Boards
+    Create, reorder, and change list of cards
+    Add labels to cards
+    Assign members to cards
+    Add attachments to cards
+    Add comments to cards
+
+Notifications
+    When someone assigns you to a card
+    When someone comments on a card you're assigned to
+    When you're invited to a project
+    When someone makes you admin of a project
+
