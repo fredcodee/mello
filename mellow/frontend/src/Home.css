@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap');
+
+.center{
+    text-align: center;
+}
+.titles{
+    font-size: 16px;
+    font-weight: 700;
+    margin: 3px 0 0;
+    color: #172b4d;
+}
+.project-list{
+    padding: 2rem;
+    margin: auto;
+    width: 67%;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.project-titles{
+    font-family: 'Lexend', sans-serif;
+}
