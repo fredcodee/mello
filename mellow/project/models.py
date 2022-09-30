@@ -1,3 +1,4 @@
+from multiprocessing.dummy import Manager
 from django.db import models
 from account.models import CustomUser
 
@@ -8,19 +9,20 @@ class Project(models.Model):
     name = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField(max_length=500, blank=True)
     pin = models.BooleanField(default=False)
-    #admins
-    #members
+    members = models.ManyToManyField(CustomUser, blank=True, related_name="team")
+    admins = models.ManyToManyField(CustomUser, blank=True, related_name="adminMembers")
     dateCreated = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.name
-    
+
 
 class Card(models.Model):
+    Manager = models.ForeignKey(CustomUser, on_delete=models.CASCADE,  null=True)
     title = models.CharField(max_length=200, null=True, blank=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE,  null=True)
     labels = models.CharField(max_length=200, null=True, blank=True)
-    #members_asigned_To
+    asigned_To = models.ManyToManyField(CustomUser, blank=True, related_name='asignedMembers')
     deadlineDate = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
