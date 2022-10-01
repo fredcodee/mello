@@ -20,3 +20,18 @@
 .project-titles{
     font-family: 'Lexend', sans-serif;
 }
+.parent {
+    display: flex;
+  }
+  
+  .items2 {
+    margin-left: auto;
+  }
+
+.star{
+
+}
+  .star:hover{
+    color: yellow;
+    
+  }

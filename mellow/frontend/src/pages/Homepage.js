@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react'
 import AuthContext from '../context/AuthContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faSpinner} from '@fortawesome/fontawesome-free-solid'
+import { faStar, faSpinner, faUsers} from '@fortawesome/fontawesome-free-solid'
 import '../Home.css';
 
 const Homepage = () => {
@@ -37,7 +37,15 @@ const Homepage = () => {
           <div>
             {projects.map((project, index) => (
                   <div className='border border-3 project-list'> 
-                    <p key = {index} className= "project-titles">{project.name}</p>
+                    <div className='parent'>
+                      <div className='items'>
+                        <p key = {index} className= "project-titles">{project.name}</p>
+                      </div>
+                      <div className='items2'>
+                        <p><span><FontAwesomeIcon icon={faUsers} /></span> Members({project.members.length})</p>
+                        <FontAwesomeIcon icon={faStar} className ="star"/>
+                      </div>
+                    </div>
                   </div>
                 ))}
           </div>
