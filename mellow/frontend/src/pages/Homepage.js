@@ -17,6 +17,18 @@ const Homepage = () => {
         setProjects(data)
     }
 
+    let getPinProjects = (p)=>{
+      return p.pin === true;
+    }
+    let viewStarProjects = projects.filter(getPinProjects)
+
+    let pinProject=async(p)=>{
+      const id = p.currentTarget.getAttribute("data-id")
+      let response = await fetch(`/api/project/star/${id}`)
+      let data = await response.json()
+      getProjects()
+    }
+    
   return (
     <div>
       <div>
@@ -24,9 +36,19 @@ const Homepage = () => {
           <FontAwesomeIcon icon={faStar} />
           <h2 className='titles'>Starred Projects</h2>
         </div>
-        
-        <div className='border border-3 project-list'>
-          <p>No starred projects </p>
+        <div>
+          {viewStarProjects.map((project) => (
+                  <div key={project.id} className='border border-3 project-list'> 
+                    <div className='parent'>
+                      <div className='items'>
+                        <p className= "project-titles">{project.name}</p>
+                      </div>
+                      <div className='items2'>
+                        <p><span><FontAwesomeIcon icon={faUsers} /></span> Members ({project.members.length})</p>
+                        <FontAwesomeIcon icon={faStar} className ="star_" onClick={pinProject} data-id ={project.id}/>
+                      </div>
+                    </div>
+                  </div>))}
         </div>
       </div>
         <div>
@@ -35,15 +57,15 @@ const Homepage = () => {
             <h2 className='titles'>YOUR WORKSPACES</h2>
           </div>
           <div>
-            {projects.map((project, index) => (
-                  <div className='border border-3 project-list'> 
+            {projects.map((project) => (
+                  <div key={project.id} className='border border-3 project-list'> 
                     <div className='parent'>
                       <div className='items'>
-                        <p key = {index} className= "project-titles">{project.name}</p>
+                        <p className= "project-titles">{project.name}</p>
                       </div>
                       <div className='items2'>
-                        <p><span><FontAwesomeIcon icon={faUsers} /></span> Members({project.members.length})</p>
-                        <FontAwesomeIcon icon={faStar} className ="star"/>
+                        <p><span><FontAwesomeIcon icon={faUsers} /></span> Members ({project.members.length})</p>
+                        <FontAwesomeIcon icon={faStar} className ="star" onClick={pinProject} data-id ={project.id}/>
                       </div>
                     </div>
                   </div>

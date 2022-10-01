@@ -28,8 +28,8 @@
     margin-left: auto;
   }
 
-.star{
-
+.star_{
+    color: yellow;
 }
   .star:hover{
     color: yellow;

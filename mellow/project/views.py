@@ -14,7 +14,18 @@ def view_projects(request,name):
     return Response(serializer.data)
 
 
-
+@api_view(['GET'])
+def pin_projects(request,project_id):
+    getProject = Project.objects.get(pk = project_id)
+    if getProject.pin:
+        getProject.pin = False
+        getProject.save()
+        event = "Project unstarred"
+    else:
+        getProject.pin = True
+        getProject.save()
+        event = "Project starred"
+    return Response(event)
 
 
 
