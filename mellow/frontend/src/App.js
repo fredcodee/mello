@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage';
 import Homepage from './pages/Homepage';
 import SignupPage from './pages/SignupPage';
 import LogoutPage from './pages/LogoutPage';
+import ProjectPage from './pages/ProjectPage';
 import Header from './components/Header';
 import PrivateRoute from './utlis/PrivateRoute';
 
@@ -16,10 +17,11 @@ function App() {
           <AuthProvider>
           <Header/>
           <Routes>
-            <Route  path = "/"  exact element = {<PrivateRoute> <Homepage /></PrivateRoute>}/>
+            <Route  path = "/" index exact element = {<PrivateRoute> <Homepage /></PrivateRoute>}/>
             <Route element = {<LoginPage />} path = "/login" />
             <Route element = {<SignupPage/>} path = "/register" />
             <Route element = {<LogoutPage />} path  = "/logout"/>
+            <Route element ={<PrivateRoute> <ProjectPage /></PrivateRoute>} path = "/view/:id"/>
           </Routes>
         </AuthProvider>
       </Router>

@@ -51,7 +51,13 @@ def get_project(request,project_id, user_id):
     return Response(event)
 
 
+@api_view(['GET'])
+def get_members(request, project_id):
+    getProject = Project.objects.get(pk = project_id)
+    team  =getProject.members
+    serializers = ProjectSerializer(team, many = True)
 
+    return Response(serializers.data)
 
 
 
