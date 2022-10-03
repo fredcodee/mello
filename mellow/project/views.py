@@ -1,9 +1,21 @@
-from getpass import getuser
 from .models import Project, Card , Comment
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import ProjectSerializer
 from account.models import CustomUser
+
+
+#funcs
+def isUser_member(user, project):
+    project = project.members.all()
+    if user in project:
+        return True
+
+def isUser_admin(user, project):
+    project = project.admins.all()
+    if user in project:
+        return True
+
 
 
 @api_view(['GET'])
@@ -26,6 +38,18 @@ def pin_projects(request,project_id):
         getProject.save()
         event = "Project starred"
     return Response(event)
+
+@api_view(['GET'])
+def get_project(request,project_id, user_id):
+    getUser = CustomUser.objects.get(pk = user_id)
+    getProject = Project.objects.get(pk = project_id)
+    event= "Access Denied"
+    if isUser_member(getUser, getProject):
+        serializer = ProjectSerializer(getProject, many = False)
+        event = serializer.data
+        
+    return Response(event)
+
 
 
 
