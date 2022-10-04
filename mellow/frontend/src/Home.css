@@ -1,5 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap');
 
+.create{
+    padding: 2rem;
+    margin: auto;
+    width: 12%;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    align-items: center;
+}
+.add{
+  font-size: 2rem;
+  padding-right: 10px;
+}
+
 .center{
     text-align: center;
 }

@@ -2,7 +2,7 @@ import React, {useEffect, useState, useContext} from 'react'
 import AuthContext from '../context/AuthContext'
 import { Link}  from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faSpinner, faUsers} from '@fortawesome/fontawesome-free-solid'
+import { faStar, faSpinner,faPlus, faUsers} from '@fortawesome/fontawesome-free-solid'
 import '../Home.css';
 
 const Homepage = () => {
@@ -32,6 +32,9 @@ const Homepage = () => {
     
   return (
     <div>
+      <div className=' border border-3 create'>
+        <p><span><FontAwesomeIcon icon ={faPlus} className="add"/></span> Project</p>
+      </div>
       <div>
         <div className='center'>
           <FontAwesomeIcon icon={faStar} />
@@ -64,7 +67,7 @@ const Homepage = () => {
             {projects.map((project) => (
                   <div key={project.id} className='border border-3 project-list'> 
                     <div className='parent'>
-                      <Link to ={`/view/${project.id}/${user.id}`}  className ="links">
+                      <Link to ={`/view/${project.id}`}  className ="links">
                         <div className='items'>
                           <p className= "project-titles">{project.name}</p>
                         </div>

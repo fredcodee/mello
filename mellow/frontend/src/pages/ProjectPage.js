@@ -3,7 +3,7 @@ import AuthContext from '../context/AuthContext';
 import { useParams } from "react-router-dom"
 import '../Projectpage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faUsers, faPlus} from '@fortawesome/fontawesome-free-solid'
+import { faChevronLeft, faUsers, faPlus, faPenSquare} from '@fortawesome/fontawesome-free-solid'
 import Dropdown from 'react-bootstrap/Dropdown';
 
 const ProjectPage = () => {
@@ -57,7 +57,7 @@ const ProjectPage = () => {
                 <h3 style={{paddingTop:'1rem'}}>Add Members <span><FontAwesomeIcon icon = {faPlus}/></span> </h3>
             </div>
             <div>
-                <p>Edit project</p>
+                <h3 style={{paddingTop:'1rem'}}>Edit Project <span><FontAwesomeIcon icon = {faPenSquare}/></span> </h3>
             </div>
 
             <hr />
