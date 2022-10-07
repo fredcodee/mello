@@ -6,4 +6,5 @@ urlpatterns = [
     path('star/<int:project_id>/', views.pin_projects, name="star project"),
     path('<int:project_id>/user/<int:user_id>/', views.get_project, name="get project"),
     path('view/members/<int:project_id>/', views.get_members, name = "memebers"),
+    path('create/<int:user_id>/', views.create_project, name=' create project'),
 ]

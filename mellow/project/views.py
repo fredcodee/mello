@@ -59,6 +59,17 @@ def get_members(request, project_id):
 
     return Response(serializers.data)
 
-
+@api_view(['POST'])
+def create_project(request, user_id):
+    owner = CustomUser.objects.get(pk = user_id)
+    data =  request.data
+    project = Project.objects.create(
+        owner = owner, name = data['projectname'], description = data['projectdetails']
+    )
+    project.members.add(owner)
+    project.admins.add(owner)
+    project.save()
+    serializers =ProjectSerializer(project, many = False)
+    return Response(serializers.data)
 
 
