@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import ProjectSerializer
 from account.models import CustomUser
+from account.serializers import CustomUserSerializer
 
 
 #funcs
@@ -72,4 +73,9 @@ def create_project(request, user_id):
     serializers =ProjectSerializer(project, many = False)
     return Response(serializers.data)
 
+@api_view(['GET'])
+def get_users(request):
+    users= CustomUser.objects.all()
+    serializers = CustomUserSerializer(users, many =True)
+    return Response(serializers.data)
 

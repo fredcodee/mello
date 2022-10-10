@@ -23,7 +23,6 @@
     height: 5rem;
     padding: 0;
 }
-
 .pname{
     font-size: 18px;
     font-weight: 700;
@@ -34,4 +33,11 @@
 .des{
     position : fixed;
     bottom : 0;
+}
+.options{
+    margin-top: 10px;
+    text-align: center;
+}
+.options button{
+    width: 100%;
 }

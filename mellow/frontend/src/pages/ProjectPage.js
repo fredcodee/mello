@@ -5,17 +5,23 @@ import '../Projectpage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faUsers, faPlus, faPenSquare} from '@fortawesome/fontawesome-free-solid'
 import Dropdown from 'react-bootstrap/Dropdown';
+import CreateProjectPopup from '../components/CreateProjectPopup';
 
 const ProjectPage = () => {
     const {id} = useParams() 
     let {user} = useContext(AuthContext)
     let [project, setProject] = useState('')
     let[members, setMembers] = useState([])
+    let [isOpen, setIsOpen] = useState(false)
     let [listOfAdmins, setListOfAdmins]=useState('')
+    let [allUsers, setAllUsers] = useState('')
+    const [filteredName, setfilteredName] = useState([])
+
 
     useEffect(()=>{
         getProject()
-    }, [id])
+        appUsers()
+    }, [id] )
 
     let getProject = async()=>{
         let response = await fetch(`/api/project/${id}/user/${user.id}`)
@@ -24,14 +30,29 @@ const ProjectPage = () => {
         setListOfAdmins(data.admins)
         getMembers(data.id)}
 
-    let getProjectMembers = (p)=>{
-        return listOfAdmins.includes(p.id) === false
-    }
-
     let getMembers = async(id)=>{
         let response = await fetch(`/api/project/view/members/${id}`)
         let data = await response.json()
         setMembers(data)
+    }
+
+    let appUsers = async()=>{
+        let response = await fetch('/api/project/all/members')
+        let data = await response.json()
+        setAllUsers(data)
+    }
+
+    let togglePopup = () => {
+        setIsOpen(!isOpen);
+      }
+    
+    let handelSearch = (newSearchQuery) =>{
+        if (newSearchQuery.length > 0){
+            //setSearchQuery(newSearchQuery);
+            let resultArray = allUsers.filter((user)=> user.name.includes(newSearchQuery))
+            setfilteredName(resultArray)
+
+        }
     }
     
   return (
@@ -44,7 +65,7 @@ const ProjectPage = () => {
             <hr style={{color:'white'}}/>
             <div>
             <Dropdown>
-            <Dropdown.Toggle id="dropdown-basic" variant="secondary" className='members'><p><span><FontAwesomeIcon icon={faUsers} /></span> Members</p></Dropdown.Toggle>
+            <Dropdown.Toggle id="dropdown-basic" variant="secondary" className='members'><p><span><FontAwesomeIcon icon={faUsers} /></span> Members ({members.length})</p></Dropdown.Toggle>
                 
                 <Dropdown.Menu>
                     {members.map((member)=>(
@@ -53,11 +74,37 @@ const ProjectPage = () => {
                 </Dropdown.Menu>
             </Dropdown>
             </div>
-            <div>
-                <h3 style={{paddingTop:'1rem'}}>Add Members <span><FontAwesomeIcon icon = {faPlus}/></span> </h3>
+            <div className='options'>
+                <button className='btn btn-secondary' style={{paddingTop:'1rem'}} onClick={togglePopup} >Add Members <span><FontAwesomeIcon icon = {faPlus}/></span></button>
             </div>
-            <div>
-                <h3 style={{paddingTop:'1rem'}}>Edit Project <span><FontAwesomeIcon icon = {faPenSquare}/></span> </h3>
+            {isOpen && <CreateProjectPopup
+            content={<>
+                <div className='title'>
+                    <h3>Add Members</h3>
+                </div>
+                <div className="input-group mb-3">
+                <input type="text" className="form-control" placeholder="search user" aria-label="Username" aria-describedby="basic-addon1" onChange={e => handelSearch(e.target.value)}/>
+                </div>
+
+                <div style={{textAlign:'center', paddingBottom:'10px'}}>
+                    <ul className='searchq'>
+                        {filteredName.map((user)=>(
+                            <li  key={user.id} className='usernamesearch rounded-pill'>{user.name}</li>
+                        ))}
+                    </ul>
+                </div>
+                <div className='title'>
+                    <h3>Share Invite Link</h3>
+                </div>
+                <div className="input-group">
+                    <textarea className="form-control" aria-label="With textarea" placeholder='Project Description'></textarea>
+                </div>
+                
+            </>}
+            handleClose={togglePopup}
+            />}
+            <div className='options'>
+                <button className='btn btn-secondary' style={{paddingTop:'1rem'}}>Edit Project <span><FontAwesomeIcon icon = {faPenSquare}/></span> </button>
             </div>
 
             <hr />
