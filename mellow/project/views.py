@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from .serializers import ProjectSerializer
 from account.models import CustomUser
 from account.serializers import CustomUserSerializer
+from rest_framework import status
 
 
 #funcs
@@ -33,12 +34,12 @@ def pin_projects(request,project_id):
     if getProject.pin:
         getProject.pin = False
         getProject.save()
-        event = "Project unstarred"
+        event = status.status.HTTP_200_OK
     else:
         getProject.pin = True
         getProject.save()
-        event = "Project starred"
-    return Response(event)
+        event = status.status.HTTP_200_OK
+    return Response(status = event)
 
 @api_view(['GET'])
 def get_project(request,project_id, user_id):
@@ -78,4 +79,21 @@ def get_users(request):
     users= CustomUser.objects.all()
     serializers = CustomUserSerializer(users, many =True)
     return Response(serializers.data)
+
+@api_view(['PUT', 'GET'])
+def add_member(request, name, project_id, user_id):
+    user = CustomUser.objects.get(pk = user_id)
+    member_toAdd = CustomUser.objects.get(name = name)
+    project = Project.objects.get(pk = project_id)
+
+    if isUser_admin(user, project):
+        project.members.add(member_toAdd)
+        project.save()
+        http_status = status.HTTP_200_OK
+    else:
+        http_status = status.HTTP_401_UNAUTHORIZED
+    return Response(status=http_status)
+    
+
+
 

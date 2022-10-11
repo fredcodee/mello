@@ -54,6 +54,30 @@ const ProjectPage = () => {
 
         }
     }
+
+    let addUserToProject = async(userName)=>{
+        let response = await fetch(`/api/project/add/${userName}/${project.id}/${user.id}`)
+        if(response.status === 200){
+            getMembers(project.id)
+            alert(`you have added ${userName} to this project`)
+
+        }
+        else{
+            alert('Cant add this user try again later')
+        }
+    }
+
+    let addMember = (userName) =>{
+        let check = members.filter((user)=> user.name === userName)
+        if(check.length > 0){
+            alert(`${userName} is already a member of this project`)
+        }
+        else{
+            addUserToProject(userName)
+        }
+    }
+
+
     
   return (
     <div className='row'>
@@ -89,7 +113,7 @@ const ProjectPage = () => {
                 <div style={{textAlign:'center', paddingBottom:'10px'}}>
                     <ul className='searchq'>
                         {filteredName.map((user)=>(
-                            <li  key={user.id} className='usernamesearch rounded-pill'>{user.name}</li>
+                            <li key={user.id} className='usernamesearch rounded-pill' onClick={addMember.bind(this, user.name)}>{user.name}</li>
                         ))}
                     </ul>
                 </div>
