@@ -1,4 +1,5 @@
 from multiprocessing.dummy import Manager
+from unittest.util import _MAX_LENGTH
 from django.db import models
 from account.models import CustomUser
 
@@ -12,6 +13,7 @@ class Project(models.Model):
     members = models.ManyToManyField(CustomUser, blank=True, related_name="team")
     admins = models.ManyToManyField(CustomUser, blank=True, related_name="adminMembers")
     dateCreated = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    ref_code = models.CharField(max_length = 200, null = True, blank = True)
 
     def __str__(self):
         return self.name

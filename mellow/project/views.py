@@ -1,3 +1,4 @@
+from asyncio import events
 from .models import Project, Card , Comment
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -5,6 +6,7 @@ from .serializers import ProjectSerializer
 from account.models import CustomUser
 from account.serializers import CustomUserSerializer
 from rest_framework import status
+import uuid
 
 
 #funcs
@@ -65,9 +67,17 @@ def get_members(request, project_id):
 def create_project(request, user_id):
     owner = CustomUser.objects.get(pk = user_id)
     data =  request.data
+    #create ref link code
+    code = str(uuid.uuid4()).replace("-","")[:12]
+
+    #check if ref code already exists
+    check_refCode = True
+    while check_refCode:
+        code = str(uuid.uuid4()).replace("-","")[:12]
+        check_refCode = Project.objects.filter(ref_code = code).exists()
+
     project = Project.objects.create(
-        owner = owner, name = data['projectname'], description = data['projectdetails']
-    )
+        owner = owner, name = data['projectname'], description = data['projectdetails'], ref_code = code)
     project.members.add(owner)
     project.admins.add(owner)
     project.save()
@@ -94,6 +104,13 @@ def add_member(request, name, project_id, user_id):
         http_status = status.HTTP_401_UNAUTHORIZED
     return Response(status=http_status)
     
-
+@api_view(['GET'])
+def invite_link(request, code):
+    project= Project.objects.filter(ref_code = code)
+    if project.exists():
+        event = status.HTTP_200_OK
+    else:
+        event = status.HTTP_404_NOT_FOUND
+    return Response(status=event)
 
 

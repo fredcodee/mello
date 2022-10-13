@@ -89,7 +89,7 @@ const ProjectPage = () => {
             <hr style={{color:'white'}}/>
             <div>
             <Dropdown>
-            <Dropdown.Toggle id="dropdown-basic" variant="secondary" className='members'><p><span><FontAwesomeIcon icon={faUsers} /></span> Members ({members.length})</p></Dropdown.Toggle>
+            <Dropdown.Toggle id="dropdown-basic" variant="secondary" className='members'><p><span><FontAwesomeIcon icon={faUsers} /></span> All Members ({members.length})</p></Dropdown.Toggle>
                 
                 <Dropdown.Menu>
                     {members.map((member)=>(

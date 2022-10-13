@@ -49,6 +49,10 @@
 
 .usernamesearch{
   color: black;
+  cursor: pointer;
+}
+.usernamesearch:hover{
+  background-color: limegreen;
 }
 
 .searchq{
