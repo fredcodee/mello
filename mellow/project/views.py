@@ -1,4 +1,4 @@
-from asyncio import events
+from tabnanny import check
 from .models import Project, Card , Comment
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -104,13 +104,28 @@ def add_member(request, name, project_id, user_id):
         http_status = status.HTTP_401_UNAUTHORIZED
     return Response(status=http_status)
     
-@api_view(['GET'])
-def invite_link(request, code):
+@api_view(['PUT','GET'])
+def invite_link(request, code, user_id):
     project= Project.objects.filter(ref_code = code)
-    if project.exists():
-        event = status.HTTP_200_OK
+    getUser = CustomUser.objects.filter(pk = user_id)
+    event = ""
+
+    if project.exists() and getUser.exists():
+        project = project.first()
+        getUser = getUser.first()
+
+        check = project.members.filter(pk = getUser.id)
+        if not check.exists():
+            #add user to team
+            project.members.add(getUser)
+            project.save()
+            event = "you have joined this Project"
+        else:
+            event = "You are already a member of this Project"
     else:
-        event = status.HTTP_404_NOT_FOUND
-    return Response(status=event)
+        event = "Invite Link Error"
+    
+    return Response(event)
+    
 
 

@@ -22,6 +22,7 @@ function App() {
             <Route element = {<SignupPage/>} path = "/register" />
             <Route element = {<LogoutPage />} path  = "/logout"/>
             <Route element ={<PrivateRoute> <ProjectPage /></PrivateRoute>} path = "/view/:id"/>
+            <Route element ={<PrivateRoute> <ProjectPage /></PrivateRoute>} path = "/invite/:code"/>
           </Routes>
         </AuthProvider>
       </Router>
