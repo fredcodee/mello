@@ -24,6 +24,6 @@ urlpatterns = [
     path('api/',  include('account.urls')),
     path('api/project/', include('project.urls')),
     path('', TemplateView.as_view(template_name = 'index.html')),
-    path('invite/<str:code>/<int:user_id>/', invite_link, name='invite link')
+    path('api/invite/<str:code>/<int:user_id>/', invite_link, name='invite link')
 
 ]

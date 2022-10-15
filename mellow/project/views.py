@@ -119,11 +119,11 @@ def invite_link(request, code, user_id):
             #add user to team
             project.members.add(getUser)
             project.save()
-            event = "you have joined this Project"
+            event = { 'event':"you have joined this Project", 'code':"success"}
         else:
-            event = "You are already a member of this Project"
+            event = { 'event':"You are already a member of this Project", 'code':"member"}
     else:
-        event = "Invite Link Error"
+        event = { 'event':"Invite Link Error", 'code':'error'}
     
     return Response(event)
     

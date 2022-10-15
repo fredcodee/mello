@@ -1,67 +1,51 @@
-import React from 'react'
 import React, {useEffect, useState, useContext} from 'react'
 import AuthContext from '../context/AuthContext';
 import { useParams } from "react-router-dom"
+import "../Invitelink.css"
+import { faUserCheck, faBan} from '@fortawesome/fontawesome-free-solid'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const InvitePage = () => {
     let {code} = useParams()
     let {user} = useContext(AuthContext)
-    let [project, setProject] = useState("")
-    let[members, setMembers] = useState([])
-    let [event, setEvent] = useState("")
+    let[htmlcode, setHtmlcode] = useState('')
 
 
     useEffect(()=>{
-        getProject()
+        joinProject()
     }, [code] )
 
 
-    let getProject = async()=>{
-        let response = await fetch(`/invite/${code}}`)
+    let joinProject = async()=>{
+        let response = await fetch(`/api/invite/${code}/${user.id}`)
         let data = await response.json()
-        if(response.status === 200){
-            setProject(data)
-            getMembers(data.id)
-            checkUser(user.name)
+        renderCode(data) 
+    }
+
+    let renderCode =(data)=>{
+        if (data.code === "success"){
+            setHtmlcode(
+            <h3><span><FontAwesomeIcon icon={faUserCheck}/></span> {data.event}</h3>)
+        }else if(data.code ==="member"){
+            setHtmlcode(
+                <h3><span><FontAwesomeIcon icon={faBan}/></span> {data.event}</h3>)
         }else{
-            
+            setHtmlcode(
+                <h3><span><FontAwesomeIcon icon={faBan}/></span> {data.event}</h3>)
         }
-        
+
+       // window.setTimeout(function() {
+       //     window.location.href = '/';
+       // }, 6000);
     }
-
-    let getMembers = async(id)=>{
-        let response = await fetch(`/api/project/view/members/${project.id}`)
-        let data = await response.json()
-        setMembers(data)
-    }
-
-
-    let addUserToProject = async(userName)=>{
-        let response = await fetch(`/api/project/add/${userName}/${project.id}/${user.id}`)
-        if(response.status === 200){
-            setEvent(`you have joined ${project.name}`)
-        }
-        else{
-            setEvent('Cant add this user try again later')
-        }
-    }
-
-    let checkUser = (userName)=>{
-        let check = members.filter((user)=> user.name === userName)
-        if(check.length > 0){
-            alert(`${userName} is already a member of this project`)
-        }
-        else{
-            addUserToProject(userName)
-        }
-    }
-
-
-
-
+    
+    
   return (
-    <div>
-      
+    <div className='container'>
+      <div className='content' style={{textAlign:'center', paddingTop:'5rem'}}>
+        {htmlcode}
+        <p>Redirecting you in a few seconds....</p>
+      </div>
     </div>
   )
 }

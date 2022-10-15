@@ -1,5 +1,5 @@
 import './App.css';
-import {HashRouter as Router, Routes, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import {AuthProvider} from './context/AuthContext';
 import LoginPage from './pages/LoginPage';
 import Homepage from './pages/Homepage';
@@ -8,6 +8,7 @@ import LogoutPage from './pages/LogoutPage';
 import ProjectPage from './pages/ProjectPage';
 import Header from './components/Header';
 import PrivateRoute from './utlis/PrivateRoute';
+import InvitePage from './pages/InvitePage';
 
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
             <Route element = {<SignupPage/>} path = "/register" />
             <Route element = {<LogoutPage />} path  = "/logout"/>
             <Route element ={<PrivateRoute> <ProjectPage /></PrivateRoute>} path = "/view/:id"/>
-            <Route element ={<PrivateRoute> <ProjectPage /></PrivateRoute>} path = "/invite/:code"/>
+            <Route element ={<PrivateRoute> <InvitePage /></PrivateRoute>} path = "/invite/:code"/>
           </Routes>
         </AuthProvider>
       </Router>
