@@ -127,5 +127,8 @@ def invite_link(request, code, user_id):
     
     return Response(event)
     
+@api_view(['PUT','GET'])
+def remove_member(request, project_id, admin_id, user_id):
+    pass
 
 

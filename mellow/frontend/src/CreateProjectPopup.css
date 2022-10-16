@@ -75,3 +75,16 @@
 .invite-link h3{
   color: blue;
 }
+
+.mm{
+  background-color:grey; 
+  color:white; 
+  cursor:pointer; 
+  margin-top:1rem;
+  padding:5px;
+}
+.mm:hover{
+  background-color: black;
+}
+
+

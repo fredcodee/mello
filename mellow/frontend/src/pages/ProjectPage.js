@@ -3,7 +3,7 @@ import AuthContext from '../context/AuthContext';
 import { useParams } from "react-router-dom"
 import '../Projectpage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faUsers, faPlus, faPenSquare} from '@fortawesome/fontawesome-free-solid'
+import { faChevronLeft, faUsers, faPlus, faPenSquare, faBan, faUserTie} from '@fortawesome/fontawesome-free-solid'
 import Dropdown from 'react-bootstrap/Dropdown';
 import CreateProjectPopup from '../components/CreateProjectPopup';
 
@@ -16,6 +16,7 @@ const ProjectPage = () => {
     let [listOfAdmins, setListOfAdmins]=useState('')
     let [allUsers, setAllUsers] = useState('')
     const [filteredName, setfilteredName] = useState([])
+    let[manageMembers, setManageMembers] = useState(false)
 
 
     useEffect(()=>{
@@ -41,10 +42,16 @@ const ProjectPage = () => {
         let data = await response.json()
         setAllUsers(data)
     }
-
+    
+    //pop ups
     let togglePopup = () => {
         setIsOpen(!isOpen);
       }
+
+    let mmPopup = () =>{
+        setManageMembers(!manageMembers)
+    }
+    // end of popups
     
     let handelSearch = (newSearchQuery) =>{
         if (newSearchQuery.length > 0){
@@ -104,7 +111,7 @@ const ProjectPage = () => {
             {isOpen && <CreateProjectPopup
             content={<>
                 <div className='title'>
-                    <h3>Add Members</h3>
+                    <h3>Add Member</h3>
                 </div>
                 <div className="input-group mb-3">
                 <input type="text" className="form-control" placeholder="search user" aria-label="Username" aria-describedby="basic-addon1" onChange={e => handelSearch(e.target.value)}/>
@@ -127,6 +134,39 @@ const ProjectPage = () => {
             </>}
             handleClose={togglePopup}
             />}
+
+            <div className='options'>
+                <button className='btn btn-secondary' style={{paddingTop:'1rem'}} onClick={mmPopup}>Manage Members <span><FontAwesomeIcon icon = {faBan}/></span> </button>
+            </div>
+            {manageMembers && <CreateProjectPopup
+            content={<>
+                <div className='title'>
+                    <h3>Manage Members</h3>
+                </div>
+
+                <div className='title'>
+                    <ul>
+                        {members.map((member)=>(
+                            <li key={member.id} className = 'rounded-pill mm'>
+                                <div className='mname'>{member.name} -<span>{listOfAdmins.includes(member.id) ? (<small><FontAwesomeIcon icon = {faUserTie} /> (Admin)</small>) : <small> (Member)</small>}</span></div>
+                                <div>{member.id != user.id?
+                                (<div>
+                                    <div>{listOfAdmins.includes(member.id) ? (<small style={{display:'none'}}> (Admin)</small>) : 
+                                        <div style={{display:'flex', justifyContent:'center'}}>
+                                            <div><button className='btn btn-primary'>Appoint <span><FontAwesomeIcon icon = {faUserTie}/> Admin</span></button></div>
+                                            <div><button className='btn btn-danger'>Remove from Project <FontAwesomeIcon icon={faBan}/></button></div> 
+                                        </div>}
+                                    </div>
+                                </div>): <small>You</small> }</div>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </>}
+            handleClose={mmPopup}
+            />}
+
+
             <div className='options'>
                 <button className='btn btn-secondary' style={{paddingTop:'1rem'}}>Edit Project <span><FontAwesomeIcon icon = {faPenSquare}/></span> </button>
             </div>
