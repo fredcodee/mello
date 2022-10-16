@@ -120,8 +120,8 @@ const ProjectPage = () => {
                 <div className='title'>
                     <h3>Share Invite Link</h3>
                 </div>
-                <div className="input-group">
-                    <textarea className="form-control" aria-label="With textarea" placeholder='Project Description'></textarea>
+                <div className="invite-link">
+                   <h3>http://domian/invite/{project.ref_code}</h3>
                 </div>
                 
             </>}

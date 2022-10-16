@@ -67,3 +67,11 @@
     color: white;
     padding: 3px;
 }
+
+.invite-link{
+  text-align: center;
+}
+
+.invite-link h3{
+  color: blue;
+}

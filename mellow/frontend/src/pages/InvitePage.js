@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useRef} from 'react'
 import AuthContext from '../context/AuthContext';
 import { useParams } from "react-router-dom"
 import "../Invitelink.css"
@@ -6,13 +6,18 @@ import { faUserCheck, faBan} from '@fortawesome/fontawesome-free-solid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const InvitePage = () => {
+    const apiCall = useRef(false) 
     let {code} = useParams()
     let {user} = useContext(AuthContext)
     let[htmlcode, setHtmlcode] = useState('')
 
 
     useEffect(()=>{
-        joinProject()
+        //handling api calls to once
+        if(!apiCall.current){
+            apiCall.current = true;
+            joinProject()
+        }   
     }, [code] )
 
 
@@ -34,9 +39,9 @@ const InvitePage = () => {
                 <h3><span><FontAwesomeIcon icon={faBan}/></span> {data.event}</h3>)
         }
 
-       // window.setTimeout(function() {
-       //     window.location.href = '/';
-       // }, 6000);
+        window.setTimeout(function() {
+            window.location.href = '/';
+        }, 5000);
     }
     
     
