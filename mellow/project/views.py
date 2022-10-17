@@ -1,4 +1,3 @@
-from tabnanny import check
 from .models import Project, Card , Comment
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -9,7 +8,7 @@ from rest_framework import status
 import uuid
 
 
-#funcs
+
 def isUser_member(user, project):
     project = project.members.all()
     if user in project:

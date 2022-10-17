@@ -84,6 +84,18 @@ const ProjectPage = () => {
         }
     }
 
+    let removeMember = async(userId)=>{
+        let response = await fetch(`/api/project/remove/${project.id}/${user.id}/${userId}`)
+        let data = await response.json()
+        if(response.status === 200){
+            getMembers(project.id)
+            alert(data)
+        }
+        else{
+            alert('Cant remove user try again later')
+        }
+    }
+
 
     
   return (
@@ -149,12 +161,12 @@ const ProjectPage = () => {
                         {members.map((member)=>(
                             <li key={member.id} className = 'rounded-pill mm'>
                                 <div className='mname'>{member.name} -<span>{listOfAdmins.includes(member.id) ? (<small><FontAwesomeIcon icon = {faUserTie} /> (Admin)</small>) : <small> (Member)</small>}</span></div>
-                                <div>{member.id != user.id?
+                                <div>{member.id !== user.id?
                                 (<div>
                                     <div>{listOfAdmins.includes(member.id) ? (<small style={{display:'none'}}> (Admin)</small>) : 
                                         <div style={{display:'flex', justifyContent:'center'}}>
-                                            <div><button className='btn btn-primary'>Appoint <span><FontAwesomeIcon icon = {faUserTie}/> Admin</span></button></div>
-                                            <div><button className='btn btn-danger'>Remove from Project <FontAwesomeIcon icon={faBan}/></button></div> 
+                                            <div style={{marginRight:'5px'}}><button className='btn btn-primary'>Appoint <span><FontAwesomeIcon icon = {faUserTie}/> Admin</span></button></div>
+                                            <div><button className='btn btn-danger' onClick={removeMember.bind(this, member.id)}>Remove from Project <FontAwesomeIcon icon={faBan}/></button></div> 
                                         </div>}
                                     </div>
                                 </div>): <small>You</small> }</div>
