@@ -20,6 +20,7 @@ const ProjectPage = () => {
     let [manageMembers, setManageMembers] = useState(false)
     let [leaveProject, setLeaveProject] = useState(false)
     let [dProject, setDProject] = useState(false)
+    let [eProject, setEProject] = useState(false)
     let history = useNavigate()
 
 
@@ -63,6 +64,10 @@ const ProjectPage = () => {
 
     let deletePopup = () => {
         setDProject(!dProject)
+    }
+
+    let editPopup = ()=>{
+        setEProject(!eProject)
     }
     // end of popups
 
@@ -140,7 +145,9 @@ const ProjectPage = () => {
         }
     }
 
+    let editProject = async()=>{
 
+    }
 
 
 
@@ -228,8 +235,25 @@ const ProjectPage = () => {
                 />}
 
                 {user.id === project.owner ? (<div className='options'>
-                    <button className='btn btn-secondary' style={{ paddingTop: '1rem' }}>Edit Project <span><FontAwesomeIcon icon={faPenSquare} /></span> </button>
+                    <button className='btn btn-secondary' style={{ paddingTop: '1rem' }} onClick = {editPopup}>Edit Project <span><FontAwesomeIcon icon={faPenSquare} /></span> </button>
                 </div>) : <div></div>}
+
+                {eProject && <CreateProjectPopup
+                    content={<>
+                    <b>Create New Project</b>
+                    <div className="input-group mb-3">
+                        <input type="text" className="form-control" placeholder={project.name} aria-label="Username" aria-describedby="basic-addon1" />
+                    </div>
+                    <div className="input-group">
+                        <textarea className="form-control" aria-label="With textarea" placeholder={project.description}></textarea>
+                    </div>
+                    <div style={{ textAlign: 'center', paddingTop: '1rem' }}>
+                        <button className='btn btn-primary' onClick={editProject}>Save Changes</button>
+                    </div>
+                    </>}
+                    handleClose={editPopup}
+                 />}
+            
                 <hr />
                 <div className='options'>
                     <button className='btn btn-warning leave' onClick={leavePopup}> Leave Project </button>

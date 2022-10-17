@@ -199,3 +199,10 @@ def delete_project(request, project_id, owner_id):
         project.delete()
         event = 'Project Deleted'
     return Response(event)
+
+
+@api_view(['POST'])
+def edit_project(request, project_id, owner_id):
+    owner = CustomUser.objects.get(pk=owner_id)
+    project = Project.objects.get(pk=project_id)
+    data = request.data
