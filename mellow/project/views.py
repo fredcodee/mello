@@ -183,8 +183,3 @@ def exit_project(request, project_id, user_id):
     
     return Response(event)
 
-
-#exit project
-    #as member
-    #as admin
-    #as owner

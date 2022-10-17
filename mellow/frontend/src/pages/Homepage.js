@@ -5,17 +5,14 @@ import CreateProjectPopup from '../components/CreateProjectPopup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faSpinner,faPlus, faUsers} from '@fortawesome/fontawesome-free-solid'
 import '../Home.css';
-import { useNavigate } from 'react-router-dom'
 
 
 const Homepage = () => {
   let {user} = useContext(AuthContext);
   let [projects, setProjects] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
-  const [projectname, setProjectName] = useState("");
-  const [projectdetails, setProjectDetails] = useState("");
-
-  const history = useNavigate()
+  let [isOpen, setIsOpen] = useState(false);
+  let [projectname, setProjectName] = useState("");
+  let [projectdetails, setProjectDetails] = useState("");
 
     useEffect(()=>{
         getProjects()

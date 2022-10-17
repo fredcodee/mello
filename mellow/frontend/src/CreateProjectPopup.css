@@ -87,4 +87,11 @@
   background-color: black;
 }
 
+.confirm{
+  text-align: center;
+    color: black;
+    margin-top: 2rem;
+    font-weight: 500;
+}
+
 

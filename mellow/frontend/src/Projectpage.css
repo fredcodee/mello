@@ -41,3 +41,11 @@
 .options button{
     width: 100%;
 }
+
+.leave{
+    color: white;
+}
+.leave:hover{
+    background-color: red;
+    color: white;
+}

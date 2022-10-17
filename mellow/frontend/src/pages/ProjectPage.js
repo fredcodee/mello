@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faUsers, faPlus, faPenSquare, faBan, faUserTie} from '@fortawesome/fontawesome-free-solid'
 import Dropdown from 'react-bootstrap/Dropdown';
 import CreateProjectPopup from '../components/CreateProjectPopup';
+import { useNavigate } from 'react-router-dom'
 
 const ProjectPage = () => {
     const {id} = useParams() 
@@ -15,8 +16,10 @@ const ProjectPage = () => {
     let [isOpen, setIsOpen] = useState(false)
     let [listOfAdmins, setListOfAdmins]=useState('')
     let [allUsers, setAllUsers] = useState('')
-    const [filteredName, setfilteredName] = useState([])
+    let [filteredName, setfilteredName] = useState([])
     let[manageMembers, setManageMembers] = useState(false)
+    let[leaveProject, setLeaveProject] = useState(false)
+    let history = useNavigate()
 
 
     useEffect(()=>{
@@ -51,6 +54,11 @@ const ProjectPage = () => {
     let mmPopup = () =>{
         setManageMembers(!manageMembers)
     }
+
+    let leavePopup = ()=>{
+        setLeaveProject(!leaveProject)
+    }
+
     // end of popups
     
     let handelSearch = (newSearchQuery) =>{
@@ -104,7 +112,17 @@ const ProjectPage = () => {
             alert(data)
         }
         else{
-            alert('Cant Appiont user')
+            alert('Cant Appoint user')
+        }
+
+    }
+
+    let exitProject = async()=>{
+        let response = await fetch(`/api/project/exit/${project.id}/${user.id}`)
+        let data = await response.json()
+        if(response.status === 200){
+            alert(data)
+            history('/')
         }
 
     }
@@ -182,7 +200,7 @@ const ProjectPage = () => {
                                             <div><button className='btn btn-danger' onClick={removeMember.bind(this, member.id)}>Remove from Project <FontAwesomeIcon icon={faBan}/></button></div> 
                                         </div>}
                                     </div>
-                                </div>): <small>You</small> }</div>
+                                </div>): <small>you</small>}</div>
                             </li>
                         ))}
                     </ul>
@@ -197,6 +215,28 @@ const ProjectPage = () => {
             </div>
 
             <hr />
+            <div className='options'>
+                <button className='btn btn-warning leave' onClick={leavePopup}> Leave Project </button>
+            </div>
+            {leaveProject && <CreateProjectPopup
+            content={<>
+                <div className='title'>
+                    <h3>YOU ARE ABOUT TO LEAVE THIS PROJECT.</h3>
+                </div>
+                <div className="confirm">
+                    <p>Are you sure ?</p>
+               </div>
+                <div className="invite-link">
+                   <button className='btn btn-primary' style={{marginRight:'5px'}} onClick={leavePopup}>No, stay</button>
+                   <button className='btn btn-danger' onClick={exitProject}>Yes, leave</button>
+                </div>
+                
+            </>}
+            handleClose={leavePopup}
+            />}
+
+
+
             <div className='des'>
                 <p>About This Project</p>
                 <hr/>
