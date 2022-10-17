@@ -144,7 +144,25 @@ def remove_member(request, project_id, admin_id, user_id):
     
     return Response(event)
 
+@api_view(['PUT', 'GET'])
+def change_role(request,project_id, admin_id, user_id):
+    project  = Project.objects.filter(pk = project_id)
+    admin = CustomUser.objects.filter(pk = admin_id)
+    user = CustomUser.objects.filter(pk = user_id)
+    event = ''
+
+    if project.exists() and admin.exists() and user.exists():
+        if isUser_admin(admin.first(), project.first()) and isUser_member(user.first(), project.first()) and not isUser_admin(user.first(), project.first()):
+            project = project.first()
+            project.admins.add(user.first())
+            project.save()
+            event = 'You Appointed user as admin of this project'
+    else:
+        event = 'Authorized Access Not Granted!'
+    
+    return Response(event)
+
 
 #exit project
-#as owner
-#as member
+    #as owner
+    #as member
