@@ -1,3 +1,4 @@
+from asyncio import events
 from .models import Project, Card , Comment
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -181,5 +182,17 @@ def exit_project(request, project_id, user_id):
     else:
         event = 'Authorized Access Not Granted!'
     
+    return Response(event)
+
+
+
+@api_view(['GET', 'DELETE'])
+def delete_project(request, project_id, owner_id):
+    project  = Project.objects.get(pk = project_id)
+    owner = CustomUser.objects.get(pk = owner_id)
+
+    if project.owner == owner:
+        project.delete()
+        event = 'Project Deleted'
     return Response(event)
 
