@@ -96,6 +96,19 @@ const ProjectPage = () => {
         }
     }
 
+    let changeRole = async(userId)=>{
+        let response = await fetch(`/api/project/role/${project.id}/${user.id}/${userId}`)
+        let data = await response.json()
+        if(response.status === 200){
+            getProject()
+            alert(data)
+        }
+        else{
+            alert('Cant Appiont user')
+        }
+
+    }
+
 
     
   return (
@@ -165,7 +178,7 @@ const ProjectPage = () => {
                                 (<div>
                                     <div>{listOfAdmins.includes(member.id) ? (<small style={{display:'none'}}> (Admin)</small>) : 
                                         <div style={{display:'flex', justifyContent:'center'}}>
-                                            <div style={{marginRight:'5px'}}><button className='btn btn-primary'>Appoint <span><FontAwesomeIcon icon = {faUserTie}/> Admin</span></button></div>
+                                            <div style={{marginRight:'5px'}}><button className='btn btn-primary' onClick={changeRole.bind(this, member.id)}>Appoint <span><FontAwesomeIcon icon = {faUserTie}/> Admin</span></button></div>
                                             <div><button className='btn btn-danger' onClick={removeMember.bind(this, member.id)}>Remove from Project <FontAwesomeIcon icon={faBan}/></button></div> 
                                         </div>}
                                     </div>
