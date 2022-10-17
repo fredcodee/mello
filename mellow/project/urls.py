@@ -10,5 +10,5 @@ urlpatterns = [
     path('add/<str:name>/<int:project_id>/<int:user_id>/', views.add_member, name="add member"),
     path('remove/<int:project_id>/<int:admin_id>/<int:user_id>/', views.remove_member, name='remove member'),
     path('role/<int:project_id>/<int:admin_id>/<int:user_id>/', views.change_role, name='change row'),
-
+    path('exit/<int:project_id>/<int:user_id>/', views.exit_project, name="exit project"),
 ]

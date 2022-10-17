@@ -163,6 +163,29 @@ def change_role(request,project_id, admin_id, user_id):
     return Response(event)
 
 
+@api_view(['PUT', 'GET'])
+def exit_project(request, project_id, user_id):
+    project  = Project.objects.filter(pk = project_id)
+    user = CustomUser.objects.filter(pk = user_id)
+
+    if project.exists() and user.exists():
+        project = project.first()
+        
+        if isUser_member(user.exists(), project.exists()):
+            #admins
+            if isUser_admin(user.exists(), project.exists()):
+                project.admins.remove(user.first())
+            #members
+            project.members.remove(user.first())
+            project.save()
+            event = 'You left this project'         
+    else:
+        event = 'Authorized Access Not Granted!'
+    
+    return Response(event)
+
+
 #exit project
-    #as owner
     #as member
+    #as admin
+    #as owner
