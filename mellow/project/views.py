@@ -170,10 +170,9 @@ def exit_project(request, project_id, user_id):
 
     if project.exists() and user.exists():
         project = project.first()
-        
-        if isUser_member(user.exists(), project.exists()):
+        if isUser_member(user.first(), project):
             #admins
-            if isUser_admin(user.exists(), project.exists()):
+            if isUser_admin(user.first(), project):
                 project.admins.remove(user.first())
             #members
             project.members.remove(user.first())
