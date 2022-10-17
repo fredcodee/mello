@@ -1,288 +1,292 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import AuthContext from '../context/AuthContext';
 import { useParams } from "react-router-dom"
 import '../Projectpage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faUsers, faPlus, faPenSquare, faBan, faUserTie, faTrash} from '@fortawesome/fontawesome-free-solid'
+import { faChevronLeft, faUsers, faPlus, faPenSquare, faBan, faUserTie, faTrash } from '@fortawesome/fontawesome-free-solid'
 import Dropdown from 'react-bootstrap/Dropdown';
 import CreateProjectPopup from '../components/CreateProjectPopup';
 import { useNavigate } from 'react-router-dom'
 
 const ProjectPage = () => {
-    const {id} = useParams() 
-    let {user} = useContext(AuthContext)
+    const { id } = useParams()
+    let { user } = useContext(AuthContext)
     let [project, setProject] = useState('')
-    let[members, setMembers] = useState([])
+    let [members, setMembers] = useState([])
     let [isOpen, setIsOpen] = useState(false)
-    let [listOfAdmins, setListOfAdmins]=useState('')
+    let [listOfAdmins, setListOfAdmins] = useState('')
     let [allUsers, setAllUsers] = useState('')
     let [filteredName, setfilteredName] = useState([])
-    let[manageMembers, setManageMembers] = useState(false)
-    let[leaveProject, setLeaveProject] = useState(false)
-    let[dProject, setDProject] = useState(false)
+    let [manageMembers, setManageMembers] = useState(false)
+    let [leaveProject, setLeaveProject] = useState(false)
+    let [dProject, setDProject] = useState(false)
     let history = useNavigate()
 
 
-    useEffect(()=>{
+    useEffect(() => {
         getProject()
         appUsers()
-    }, [id] )
+    }, [id])
 
-    let getProject = async()=>{
+    let getProject = async () => {
         let response = await fetch(`/api/project/${id}/user/${user.id}`)
         let data = await response.json()
         setProject(data)
         setListOfAdmins(data.admins)
-        getMembers(data.id)}
+        getMembers(data.id)
+    }
 
-    let getMembers = async(id)=>{
+    let getMembers = async (id) => {
         let response = await fetch(`/api/project/view/members/${id}`)
         let data = await response.json()
         setMembers(data)
     }
 
-    let appUsers = async()=>{
+    let appUsers = async () => {
         let response = await fetch('/api/project/all/members')
         let data = await response.json()
         setAllUsers(data)
     }
-    
+
     //pop ups
     let togglePopup = () => {
         setIsOpen(!isOpen);
-      }
+    }
 
-    let mmPopup = () =>{
+    let mmPopup = () => {
         setManageMembers(!manageMembers)
     }
 
-    let leavePopup = ()=>{
+    let leavePopup = () => {
         setLeaveProject(!leaveProject)
     }
 
-    let deletePopup= ()=>{
+    let deletePopup = () => {
         setDProject(!dProject)
     }
     // end of popups
-    
-    let handelSearch = (newSearchQuery) =>{
-        if (newSearchQuery.length > 0){
-            let resultArray = allUsers.filter((user)=> user.name.includes(newSearchQuery))
+
+    let handelSearch = (newSearchQuery) => {
+        if (newSearchQuery.length > 0) {
+            let resultArray = allUsers.filter((user) => user.name.includes(newSearchQuery))
             setfilteredName(resultArray)
 
         }
     }
 
-    let addUserToProject = async(userName)=>{
+    let addUserToProject = async (userName) => {
         let response = await fetch(`/api/project/add/${userName}/${project.id}/${user.id}`)
-        if(response.status === 200){
+        if (response.status === 200) {
             getMembers(project.id)
             alert(`you have added ${userName} to this project`)
 
         }
-        else{
+        else {
             alert('Cant add this user try again later')
         }
     }
 
-    let addMember = (userName) =>{
-        let check = members.filter((user)=> user.name === userName)
-        if(check.length > 0){
+    let addMember = (userName) => {
+        let check = members.filter((user) => user.name === userName)
+        if (check.length > 0) {
             alert(`${userName} is already a member of this project`)
         }
-        else{
+        else {
             addUserToProject(userName)
         }
     }
 
-    let removeMember = async(userId)=>{
+    let removeMember = async (userId) => {
         let response = await fetch(`/api/project/remove/${project.id}/${user.id}/${userId}`)
         let data = await response.json()
-        if(response.status === 200){
+        if (response.status === 200) {
             getMembers(project.id)
             alert(data)
         }
-        else{
+        else {
             alert('Cant remove user try again later')
         }
     }
 
-    let changeRole = async(userId)=>{
+    let changeRole = async (userId) => {
         let response = await fetch(`/api/project/role/${project.id}/${user.id}/${userId}`)
         let data = await response.json()
-        if(response.status === 200){
+        if (response.status === 200) {
             getProject()
             alert(data)
         }
-        else{
+        else {
             alert('Cant Appoint user')
         }
 
     }
 
-    let exitProject = async()=>{
+    let exitProject = async () => {
         let response = await fetch(`/api/project/exit/${project.id}/${user.id}`)
         let data = await response.json()
-        if(response.status === 200){
+        if (response.status === 200) {
             alert(data)
             history('/')
         }
 
     }
 
-    let deleteProject = async()=>{
+    let deleteProject = async () => {
         let response = await fetch(`/api/project/delete/${project.id}/${user.id}`)
         let data = await response.json()
-        if(response.status === 200){
+        if (response.status === 200) {
             alert(data)
             history('/')
         }
     }
 
 
-    
-  return (
-    <div className='row'>
-        <div className='col-2 side-menu'>
-            <div className='side-name'>
-                <h3>{user.name}'s workspace <span><FontAwesomeIcon icon={faChevronLeft} style ={{fontSize:'14px'}}/></span></h3>
-                {listOfAdmins.includes(user.id) ? (<small>Admin</small>) : <p>Member</p>}
+
+
+
+    return (
+        <div className='row'>
+            <div className='col-2 side-menu'>
+                <div className='side-name'>
+                    <h3>{user.name}'s workspace <span><FontAwesomeIcon icon={faChevronLeft} style={{ fontSize: '14px' }} /></span></h3>
+                    {listOfAdmins.includes(user.id) ? (<small>Admin</small>) : <p>Member</p>}
+                </div>
+                <hr style={{ color: 'white' }} />
+                <div>
+                    <Dropdown>
+                        <Dropdown.Toggle id="dropdown-basic" variant="secondary" className='members'><p><span><FontAwesomeIcon icon={faUsers} /></span> All Members ({members.length})</p></Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                            {members.map((member) => (
+                                <Dropdown.Item key={member.id} eventKey={member.id} >{member.name}</Dropdown.Item>
+                            ))}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </div>
+                {listOfAdmins.includes(user.id) ? (
+                    <div>
+                        <div className='options'>
+                            <button className='btn btn-secondary' style={{ paddingTop: '1rem' }} onClick={togglePopup} >Add Members <span><FontAwesomeIcon icon={faPlus} /></span></button>
+                        </div>
+                        <div className='options'>
+                            <button className='btn btn-secondary' style={{ paddingTop: '1rem' }} onClick={mmPopup}>Manage Members <span><FontAwesomeIcon icon={faBan} /></span> </button>
+                        </div>
+                    </div>
+                ) : <div></div>}
+                {isOpen && <CreateProjectPopup
+                    content={<>
+                        <div className='title'>
+                            <h3>Add Member</h3>
+                        </div>
+                        <div className="input-group mb-3">
+                            <input type="text" className="form-control" placeholder="search user" aria-label="Username" aria-describedby="basic-addon1" onChange={e => handelSearch(e.target.value)} />
+                        </div>
+
+                        <div style={{ textAlign: 'center', paddingBottom: '10px' }}>
+                            <ul className='searchq'>
+                                {filteredName.map((user) => (
+                                    <li key={user.id} className='usernamesearch rounded-pill' onClick={addMember.bind(this, user.name)}>{user.name}</li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div className='title'>
+                            <h3>Share Invite Link</h3>
+                        </div>
+                        <div className="invite-link">
+                            <h3>http://domian/invite/{project.ref_code}</h3>
+                        </div>
+
+                    </>}
+                    handleClose={togglePopup}
+                />}
+                {manageMembers && <CreateProjectPopup
+                    content={<>
+                        <div className='title'>
+                            <h3>Manage Members</h3>
+                        </div>
+
+                        <div className='title'>
+                            <ul>
+                                {members.map((member) => (
+                                    <li key={member.id} className='rounded-pill mm'>
+                                        <div className='mname'>{member.name} -<span>{listOfAdmins.includes(member.id) ? (<small><FontAwesomeIcon icon={faUserTie} /> (Admin)</small>) : <small> (Member)</small>}</span></div>
+                                        <div>{member.id !== user.id ?
+                                            (<div>
+                                                <div>{listOfAdmins.includes(member.id) ? (<small style={{ display: 'none' }}> (Admin)</small>) :
+                                                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                        <div style={{ marginRight: '5px' }}><button className='btn btn-primary' onClick={changeRole.bind(this, member.id)}>Appoint <span><FontAwesomeIcon icon={faUserTie} /> Admin</span></button></div>
+                                                        <div><button className='btn btn-danger' onClick={removeMember.bind(this, member.id)}>Remove from Project <FontAwesomeIcon icon={faBan} /></button></div>
+                                                    </div>}
+                                                </div>
+                                            </div>) : <small>you</small>}</div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </>}
+                    handleClose={mmPopup}
+                />}
+
+                {user.id === project.owner ? (<div className='options'>
+                    <button className='btn btn-secondary' style={{ paddingTop: '1rem' }}>Edit Project <span><FontAwesomeIcon icon={faPenSquare} /></span> </button>
+                </div>) : <div></div>}
+                <hr />
+                <div className='options'>
+                    <button className='btn btn-warning leave' onClick={leavePopup}> Leave Project </button>
+                </div>
+                {leaveProject && <CreateProjectPopup
+                    content={<>
+                        <div className='title'>
+                            <h3>YOU ARE ABOUT TO LEAVE THIS PROJECT.</h3>
+                        </div>
+                        <div className="confirm">
+                            <p>Are you sure ?</p>
+                        </div>
+                        <div className="invite-link">
+                            <button className='btn btn-primary' style={{ marginRight: '5px' }} onClick={leavePopup}>No, stay</button>
+                            <button className='btn btn-danger' onClick={exitProject}>Yes, leave</button>
+                        </div>
+
+                    </>}
+                    handleClose={leavePopup}
+                />}
+
+                {user.id === project.owner ? (<div className='options'>
+                    <button className='btn btn-danger' style={{ paddingTop: '5px' }} onClick={deletePopup}>Delete Project <span><FontAwesomeIcon icon={faTrash} /></span> </button>
+                </div>) : <div></div>}
+                {dProject && <CreateProjectPopup
+                    content={<>
+                        <div className='title'>
+                            <h3>YOU ARE ABOUT TO DELETE THIS PROJECT.</h3>
+                        </div>
+                        <div className="confirm">
+                            <p>Are you sure ?</p>
+                        </div>
+                        <div className="invite-link">
+                            <button className='btn btn-primary' style={{ marginRight: '5px' }} onClick={deletePopup}>Cancel</button>
+                            <button className='btn btn-danger' onClick={deleteProject}>Yes, Delete</button>
+                        </div>
+
+                    </>}
+                    handleClose={deletePopup}
+                />}
+
+                <div className='des'>
+                    <p>About This Project</p>
+                    <hr />
+                    <p>{project.description}</p>
+                </div>
             </div>
-            <hr style={{color:'white'}}/>
-            <div>
-            <Dropdown>
-            <Dropdown.Toggle id="dropdown-basic" variant="secondary" className='members'><p><span><FontAwesomeIcon icon={faUsers} /></span> All Members ({members.length})</p></Dropdown.Toggle>
-                
-                <Dropdown.Menu>
-                    {members.map((member)=>(
-                        <Dropdown.Item key={member.id} eventKey={member.id} >{member.name}</Dropdown.Item>
-                    ))}
-                </Dropdown.Menu>
-            </Dropdown>
-            </div>
-            <div className='options'>
-                <button className='btn btn-secondary' style={{paddingTop:'1rem'}} onClick={togglePopup} >Add Members <span><FontAwesomeIcon icon = {faPlus}/></span></button>
-            </div>
-            {isOpen && <CreateProjectPopup
-            content={<>
-                <div className='title'>
-                    <h3>Add Member</h3>
-                </div>
-                <div className="input-group mb-3">
-                <input type="text" className="form-control" placeholder="search user" aria-label="Username" aria-describedby="basic-addon1" onChange={e => handelSearch(e.target.value)}/>
-                </div>
-
-                <div style={{textAlign:'center', paddingBottom:'10px'}}>
-                    <ul className='searchq'>
-                        {filteredName.map((user)=>(
-                            <li key={user.id} className='usernamesearch rounded-pill' onClick={addMember.bind(this, user.name)}>{user.name}</li>
-                        ))}
-                    </ul>
-                </div>
-                <div className='title'>
-                    <h3>Share Invite Link</h3>
-                </div>
-                <div className="invite-link">
-                   <h3>http://domian/invite/{project.ref_code}</h3>
-                </div>
-                
-            </>}
-            handleClose={togglePopup}
-            />}
-
-            <div className='options'>
-                <button className='btn btn-secondary' style={{paddingTop:'1rem'}} onClick={mmPopup}>Manage Members <span><FontAwesomeIcon icon = {faBan}/></span> </button>
-            </div>
-            {manageMembers && <CreateProjectPopup
-            content={<>
-                <div className='title'>
-                    <h3>Manage Members</h3>
-                </div>
-
-                <div className='title'>
-                    <ul>
-                        {members.map((member)=>(
-                            <li key={member.id} className = 'rounded-pill mm'>
-                                <div className='mname'>{member.name} -<span>{listOfAdmins.includes(member.id) ? (<small><FontAwesomeIcon icon = {faUserTie} /> (Admin)</small>) : <small> (Member)</small>}</span></div>
-                                <div>{member.id !== user.id?
-                                (<div>
-                                    <div>{listOfAdmins.includes(member.id) ? (<small style={{display:'none'}}> (Admin)</small>) : 
-                                        <div style={{display:'flex', justifyContent:'center'}}>
-                                            <div style={{marginRight:'5px'}}><button className='btn btn-primary' onClick={changeRole.bind(this, member.id)}>Appoint <span><FontAwesomeIcon icon = {faUserTie}/> Admin</span></button></div>
-                                            <div><button className='btn btn-danger' onClick={removeMember.bind(this, member.id)}>Remove from Project <FontAwesomeIcon icon={faBan}/></button></div> 
-                                        </div>}
-                                    </div>
-                                </div>): <small>you</small>}</div>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </>}
-            handleClose={mmPopup}
-            />}
 
 
-            <div className='options'>
-                <button className='btn btn-secondary' style={{paddingTop:'1rem'}}>Edit Project <span><FontAwesomeIcon icon = {faPenSquare}/></span> </button>
-            </div>
-
-            <hr />
-            <div className='options'>
-                <button className='btn btn-warning leave' onClick={leavePopup}> Leave Project </button>
-            </div>
-            {leaveProject && <CreateProjectPopup
-            content={<>
-                <div className='title'>
-                    <h3>YOU ARE ABOUT TO LEAVE THIS PROJECT.</h3>
+            <div className='col-10'>
+                <div className='pname'>
+                    {project.name}
                 </div>
-                <div className="confirm">
-                    <p>Are you sure ?</p>
-               </div>
-                <div className="invite-link">
-                   <button className='btn btn-primary' style={{marginRight:'5px'}} onClick={leavePopup}>No, stay</button>
-                   <button className='btn btn-danger' onClick={exitProject}>Yes, leave</button>
-                </div>
-                
-            </>}
-            handleClose={leavePopup}
-            />}
-
-            {user.id === project.owner? (<div className='options'>
-                <button className='btn btn-danger' style={{paddingTop:'5px'}} onClick={deletePopup}>Delete Project <span><FontAwesomeIcon icon = {faTrash}/></span> </button>
-            </div>): <div></div> }
-            {dProject && <CreateProjectPopup
-            content={<>
-                <div className='title'>
-                    <h3>YOU ARE ABOUT TO DELETE THIS PROJECT.</h3>
-                </div>
-                <div className="confirm">
-                    <p>Are you sure ?</p>
-               </div>
-                <div className="invite-link">
-                   <button className='btn btn-primary' style={{marginRight:'5px'}} onClick={deletePopup}>Cancel</button>
-                   <button className='btn btn-danger' onClick={deleteProject}>Yes, Delete</button>
-                </div>
-                
-            </>}
-            handleClose={deletePopup}
-            />}
-
-            <div className='des'>
-                <p>About This Project</p>
-                <hr/>
-                <p>{project.description}</p>
             </div>
         </div>
 
-
-        <div className='col-10'>
-            <div className='pname'>
-                {project.name}
-            </div>
-        </div>
-    </div>
-
-  )
+    )
 }
 
 export default ProjectPage
