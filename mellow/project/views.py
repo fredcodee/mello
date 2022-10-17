@@ -129,6 +129,23 @@ def invite_link(request, code, user_id):
     
 @api_view(['PUT','GET'])
 def remove_member(request, project_id, admin_id, user_id):
-    pass
+    project  = Project.objects.filter(pk = project_id)
+    admin = CustomUser.objects.filter(pk = admin_id)
+    user = CustomUser.objects.filter(pk = user_id)
+    event = ''
+
+    if project.exists() and admin.exists() and user.exists():
+        if isUser_admin(admin.first(), project.first()) and isUser_member(user.first(), project.first()):
+            project = project.first()
+            project.members.remove(user.first())
+            project.save()
+            event = 'You removed user from this project'
+    else:
+        event = 'Authorized Access Not Granted!'
+    
+    return Response(event)
 
 
+#exit project
+#as owner
+#as member
