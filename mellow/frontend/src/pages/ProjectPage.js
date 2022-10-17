@@ -3,7 +3,7 @@ import AuthContext from '../context/AuthContext';
 import { useParams } from "react-router-dom"
 import '../Projectpage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faUsers, faPlus, faPenSquare, faBan, faUserTie} from '@fortawesome/fontawesome-free-solid'
+import { faChevronLeft, faUsers, faPlus, faPenSquare, faBan, faUserTie, faTrash} from '@fortawesome/fontawesome-free-solid'
 import Dropdown from 'react-bootstrap/Dropdown';
 import CreateProjectPopup from '../components/CreateProjectPopup';
 import { useNavigate } from 'react-router-dom'
@@ -19,6 +19,7 @@ const ProjectPage = () => {
     let [filteredName, setfilteredName] = useState([])
     let[manageMembers, setManageMembers] = useState(false)
     let[leaveProject, setLeaveProject] = useState(false)
+    let[dProject, setDProject] = useState(false)
     let history = useNavigate()
 
 
@@ -59,11 +60,13 @@ const ProjectPage = () => {
         setLeaveProject(!leaveProject)
     }
 
+    let deletePopup= ()=>{
+        setDProject(!dProject)
+    }
     // end of popups
     
     let handelSearch = (newSearchQuery) =>{
         if (newSearchQuery.length > 0){
-            //setSearchQuery(newSearchQuery);
             let resultArray = allUsers.filter((user)=> user.name.includes(newSearchQuery))
             setfilteredName(resultArray)
 
@@ -125,6 +128,15 @@ const ProjectPage = () => {
             history('/')
         }
 
+    }
+
+    let deleteProject = async()=>{
+        let response = await fetch(`/api/project/delete/${project.id}/${user.id}`)
+        let data = await response.json()
+        if(response.status === 200){
+            alert(data)
+            history('/')
+        }
     }
 
 
@@ -235,7 +247,25 @@ const ProjectPage = () => {
             handleClose={leavePopup}
             />}
 
-
+            {user.id === project.owner? (<div className='options'>
+                <button className='btn btn-danger' style={{paddingTop:'5px'}} onClick={deletePopup}>Delete Project <span><FontAwesomeIcon icon = {faTrash}/></span> </button>
+            </div>): <div></div> }
+            {dProject && <CreateProjectPopup
+            content={<>
+                <div className='title'>
+                    <h3>YOU ARE ABOUT TO DELETE THIS PROJECT.</h3>
+                </div>
+                <div className="confirm">
+                    <p>Are you sure ?</p>
+               </div>
+                <div className="invite-link">
+                   <button className='btn btn-primary' style={{marginRight:'5px'}} onClick={deletePopup}>Cancel</button>
+                   <button className='btn btn-danger' onClick={deleteProject}>Yes, Delete</button>
+                </div>
+                
+            </>}
+            handleClose={deletePopup}
+            />}
 
             <div className='des'>
                 <p>About This Project</p>
