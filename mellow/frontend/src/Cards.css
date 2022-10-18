@@ -1,0 +1,47 @@
+
+#scroller-wrapper, .scroller,.board-main-content, .board{
+    height: 100%;
+}
+.board{  
+  display: grid;
+  grid-template-rows: max-content auto;
+  grid-gap: 10px;
+}
+.board-lists{
+    display: grid;
+  grid-auto-columns: 272px;
+  grid-auto-flow: column;
+  grid-gap: 8px;
+  overflow: scroll
+}
+
+.list{
+    background-color: rgb(235, 236, 240);
+  border-radius: 3px;
+  padding: 10px;
+  display: grid;
+  grid-auto-rows: max-content;
+  grid-gap: 10px;
+  height: max-content;
+  padding: 10px;
+}
+.list-title {
+    font-weight: bold;
+  }
+  
+  .card {
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 rgba(9,30,66,.25);
+    padding: 3px;
+  }
+  
+  .add-card {
+    padding-top: 10px;
+    padding-bottom: 5px;
+  }
+
+  .as{
+    background-color: aqua !important;
+    padding: 10px;
+  }

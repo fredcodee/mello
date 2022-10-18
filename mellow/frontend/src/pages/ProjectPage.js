@@ -7,6 +7,7 @@ import { faChevronLeft, faUsers, faPlus, faPenSquare, faBan, faUserTie, faTrash 
 import Dropdown from 'react-bootstrap/Dropdown';
 import CreateProjectPopup from '../components/CreateProjectPopup';
 import { useNavigate } from 'react-router-dom'
+import Cards from '../components/Cards';
 
 const ProjectPage = () => {
     const { id } = useParams()
@@ -348,6 +349,7 @@ const ProjectPage = () => {
                 <div className='pname'>
                     {project.name}
                 </div>
+                <Cards />
             </div>
         </div>
 
