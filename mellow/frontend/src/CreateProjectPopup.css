@@ -94,4 +94,8 @@
     font-weight: 500;
 }
 
+.input-group label{
+  color: black;
+  margin-right: 8px;
+}
 

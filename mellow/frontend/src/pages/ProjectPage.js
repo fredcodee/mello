@@ -17,10 +17,13 @@ const ProjectPage = () => {
     let [listOfAdmins, setListOfAdmins] = useState('')
     let [allUsers, setAllUsers] = useState('')
     let [filteredName, setfilteredName] = useState([])
+    let[changeProjectName, setChangeProjectName] = useState('')
+    let[changeProjectDescription, setChangeProjectDescription] = useState('')
     let [manageMembers, setManageMembers] = useState(false)
     let [leaveProject, setLeaveProject] = useState(false)
     let [dProject, setDProject] = useState(false)
     let [eProject, setEProject] = useState(false)
+
     let history = useNavigate()
 
 
@@ -145,8 +148,42 @@ const ProjectPage = () => {
         }
     }
 
-    let editProject = async()=>{
+    let editProject = async e=>{
+        e.preventDefault();
+        if(changeProjectName.length > 0 || changeProjectDescription.length > 0 ){
+            let cpn = changeProjectName
+            let cpd = changeProjectDescription
+            if(changeProjectName.length === 0){
+                cpn = project.name
+            }
+            if (changeProjectDescription.length === 0){
+                cpd = project.description
+            }
 
+            editProjectApiCall(cpn,cpd)
+        }else{
+            editPopup()
+        }   
+    }
+
+    let editProjectApiCall = async (cpn, cpd)=>{
+        const response = await fetch(`/api/project/edit/${project.id}/${user.id}/`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              cpn,
+              cpd
+            })
+          });
+          if (response.status === 200) {
+            editPopup()
+            window.location.reload();
+      
+          } else {
+            alert("Something went wrong!");
+          }
     }
 
 
@@ -240,12 +277,16 @@ const ProjectPage = () => {
 
                 {eProject && <CreateProjectPopup
                     content={<>
-                    <b>Create New Project</b>
+                    <div className='title'>
+                        <h3>Edit Project</h3>
+                    </div>
                     <div className="input-group mb-3">
-                        <input type="text" className="form-control" placeholder={project.name} aria-label="Username" aria-describedby="basic-addon1" />
+                        <label> Name:  </label>
+                        <input type="text" className="form-control" placeholder={project.name} aria-label="Username" aria-describedby="basic-addon1" onChange={e => setChangeProjectName(e.target.value)}/>
                     </div>
                     <div className="input-group">
-                        <textarea className="form-control" aria-label="With textarea" placeholder={project.description}></textarea>
+                        <label> Description:  </label>
+                        <textarea className="form-control" aria-label="With textarea" placeholder ={project.description} onChange={e => setChangeProjectDescription(e.target.value)}></textarea>
                     </div>
                     <div style={{ textAlign: 'center', paddingTop: '1rem' }}>
                         <button className='btn btn-primary' onClick={editProject}>Save Changes</button>

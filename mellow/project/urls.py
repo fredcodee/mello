@@ -12,6 +12,6 @@ urlpatterns = [
     path('role/<int:project_id>/<int:admin_id>/<int:user_id>/', views.change_role, name='change row'),
     path('exit/<int:project_id>/<int:user_id>/', views.exit_project, name="exit project"),
     path('delete/<int:project_id>/<int:owner_id>/', views.delete_project, name="delete project"),
-    path('edit/int:project_id>/<int:owner_id>/', views.edit_project, name='edit project'),
+    path('edit/<int:project_id>/<int:owner_id>/', views.edit_project, name='edit project'),
 
 ]

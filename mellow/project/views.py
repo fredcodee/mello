@@ -201,8 +201,15 @@ def delete_project(request, project_id, owner_id):
     return Response(event)
 
 
-@api_view(['POST'])
+@api_view(['PUT'])
 def edit_project(request, project_id, owner_id):
     owner = CustomUser.objects.get(pk=owner_id)
     project = Project.objects.get(pk=project_id)
     data = request.data
+
+    if project.owner == owner:
+        project.name = data['cpn']
+        project.description = data['cpd']
+        project.save()
+        serializers = ProjectSerializer(project, many=False)
+        return Response(serializers.data)
