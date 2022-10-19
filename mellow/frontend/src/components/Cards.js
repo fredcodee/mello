@@ -17,10 +17,10 @@ const Cards = () => {
                                         Asigned Members (3)
                                     </div>
                                     <div class="card">
-                                        comment
+                                        check features
                                     </div>
                                     <div class="card">
-                                        comment
+                                        fix load problems
                                     </div>
                                     <div class="card">
                                         comment
