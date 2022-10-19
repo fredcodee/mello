@@ -5,5 +5,5 @@ and developers effectively
 ## What problem does mellow solve ?
 - To keep track of reported software bugs and feature requests in software development projects or other projects. 
 
-###                                                 Database model(postgress)
+###                                                 Database model(postgresql)
 ![alt text](https://github.com/fredcodee/mello/blob/main/Database%20Design.jpg)
