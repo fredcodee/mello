@@ -11,7 +11,7 @@ const Cards = () => {
                             <div class="list border border-start-0">
                                 <div className='list'>
                                     <div class="list-title">
-                                        List title
+                                        Card title
                                     </div>
                                     <div class="card as">
                                         Asigned Members (3)
@@ -21,136 +21,6 @@ const Cards = () => {
                                     </div>
                                     <div class="card">
                                         comment
-                                    </div>
-                                    <div class="card">
-                                        comment
-                                    </div>
-                                    <div class="add-card">
-                                        + Add another card
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="list border border-start-0">
-                                <div className='list'>
-                                    <div class="list-title">
-                                        List title
-                                    </div>
-                                    <div class="card as">
-                                        Asigned Members (3)
-                                    </div>
-                                    <div class="card">
-                                        comment
-                                    </div>
-                                    <div class="card">
-                                        comment
-                                    </div>
-                                    <div class="card">
-                                        comment
-                                    </div>
-                                    <div class="card">
-                                        comment
-                                    </div>
-                                    <div class="card">
-                                        comment
-                                    </div>
-                                    <div class="card">
-                                        comment
-                                    </div>
-                                    <div class="add-card">
-                                        + Add another card
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list border border-start-0">
-                                <div className='list'>
-                                    <div class="list-title">
-                                        List title
-                                    </div>
-                                    <div class="card as">
-                                        Asigned Members (3)
-                                    </div>
-                                    <div class="card">
-                                        comment
-                                    </div>
-                                    <div class="card">
-                                        comment
-                                    </div>
-                                    <div class="card">
-                                        comment
-                                    </div>
-                                    <div class="add-card">
-                                        + Add another card
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list border border-start-0">
-                                <div className='list'>
-                                    <div class="list-title">
-                                        List title
-                                    </div>
-                                    <div class="card as">
-                                        Asigned Members (3)
-                                    </div>
-                                    <div class="card">
-                                        comment
-                                    </div>
-                                    <div class="card">
-                                        comment
-                                    </div>
-                                    <div class="card">
-                                        comment
-                                    </div>
-                                    <div class="add-card">
-                                        + Add another card
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list border border-start-0">
-                                <div className='list'>
-                                    <div class="list-title">
-                                        List title
-                                    </div>
-                                    <div class="card as">
-                                        Asigned Members (3)
-                                    </div>
-                                    <div class="card">
-                                        comment
-                                    </div>
-                                    <div class="card">
-                                        comment
-                                    </div>
-                                    <div class="card">
-                                        comment
-                                    </div>
-                                    <div class="add-card">
-                                        + Add another card
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list border border-start-0">
-                                <div className='list'>
-                                    <div class="list-title">
-                                        List title
-                                    </div>
-                                    <div class="card as">
-                                        Asigned Members (3)
-                                    </div>
-                                    <div class="card">
-                                        comment
-                                    </div>
-                                    <div class="add-card">
-                                        + Add another card
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list border border-start-0">
-                                <div className='list'>
-                                    <div class="list-title">
-                                        List title
-                                    </div>
-                                    <div class="card as">
-                                        Asigned Members (3)
                                     </div>
                                     <div class="card">
                                         comment
