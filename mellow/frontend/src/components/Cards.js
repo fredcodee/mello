@@ -11,19 +11,50 @@ const Cards = () => {
                             <div class="list border border-start-0">
                                 <div className='list'>
                                     <div class="list-title">
-                                        Card title
+                                        Task title
                                     </div>
-                                    <div class="card as">
+                                    <hr/>
+                                    <div className='att'>
+                                        <div className='label'>
+                                            <p>Important</p>
+                                        </div>
+                                        <div className='dl'>
+                                            Deadline: 24-Nov 2022
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="cd as">
                                         Asigned Members (3)
                                     </div>
-                                    <div class="card">
-                                        check features
+                                    <div class="cd">
+                                        <div className='name-time'>
+                                            <small className='cd-name'>Mike john</small>
+                                            <small className='cd-time'>19-oct, 9:10am</small>
+                                        </div>
+                                        <hr />
+                                        <div className='comment'>
+                                            <p>how do i fix load problems</p>
+                                        </div>
                                     </div>
-                                    <div class="card">
-                                        fix load problems
+                                    <div class="cd">
+                                    <div className='name-time'>
+                                            <small className='cd-name'>Sarah jen</small>
+                                            <small className='cd-time'>17-oct, 9:10am</small>
+                                        </div>
+                                        <hr />
+                                        <div className='comment'>
+                                            <p>working on this rn..</p>
+                                        </div>
                                     </div>
-                                    <div class="card">
-                                        comment
+                                    <div class="cd">
+                                        <div className='name-time'>
+                                            <small className='cd-name'>mica</small>
+                                            <small className='cd-time'>19-oct, 11:10am</small>
+                                        </div>
+                                        <hr />
+                                        <div className='comment'>
+                                            <p>Asign this to abdul</p>
+                                        </div>
                                     </div>
                                     <div class="add-card">
                                         + Add another card

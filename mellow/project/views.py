@@ -1,7 +1,7 @@
 from .models import Project, Card, Comment
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializers import ProjectSerializer
+from .serializers import ProjectSerializer, CardSerializer, CommentSerializer
 from account.models import CustomUser
 from account.serializers import CustomUserSerializer
 from rest_framework import status
@@ -213,3 +213,4 @@ def edit_project(request, project_id, owner_id):
         project.save()
         serializers = ProjectSerializer(project, many=False)
         return Response(serializers.data)
+
