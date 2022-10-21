@@ -349,7 +349,7 @@ const ProjectPage = () => {
                 <div className='pname'>
                     {project.name}
                 </div>
-                <Cards />
+                <Cards projectId ={project.id}/>
             </div>
         </div>
 

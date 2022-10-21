@@ -1,7 +1,18 @@
 import React from 'react'
+import { useEffect } from 'react';
 import '../Cards.css';
 
-const Cards = () => {
+const Cards = (projectId) => {
+    let [cards, setCards] = useEffect("")
+    useEffect(()=>{
+        tasks()
+    }, [])
+
+    let tasks = async()=>{
+        let response = await fetch(`/api/project/cards/view/${projectId}`)
+        let data = await response.json()
+    }
+
     return (
         <div id="scroller-wrapper">
             <div className='scroller'>

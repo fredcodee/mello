@@ -214,3 +214,10 @@ def edit_project(request, project_id, owner_id):
         serializers = ProjectSerializer(project, many=False)
         return Response(serializers.data)
 
+
+@api_view(['GET'])
+def view_cards(request, project_id):
+    project = Project.objects.get(pk = project_id)
+    cards = Card.objects.filter(project = project).all()
+    serializer = CardSerializer(cards, many=True)
+    return Response(serializer.data)

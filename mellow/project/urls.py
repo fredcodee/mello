@@ -13,5 +13,7 @@ urlpatterns = [
     path('exit/<int:project_id>/<int:user_id>/', views.exit_project, name="exit project"),
     path('delete/<int:project_id>/<int:owner_id>/', views.delete_project, name="delete project"),
     path('edit/<int:project_id>/<int:owner_id>/', views.edit_project, name='edit project'),
+    path('cards/view/<int:project_id>', views.view_cards, name="view cards"),
+    
 
 ]
