@@ -24,6 +24,7 @@ const ProjectPage = () => {
     let [leaveProject, setLeaveProject] = useState(false)
     let [dProject, setDProject] = useState(false)
     let [eProject, setEProject] = useState(false)
+    let [cards, setCards] = useState([])
 
     let history = useNavigate()
 
@@ -39,6 +40,8 @@ const ProjectPage = () => {
         setProject(data)
         setListOfAdmins(data.admins)
         getMembers(data.id)
+        tasks(data.id)
+
     }
 
     let getMembers = async (id) => {
@@ -186,6 +189,12 @@ const ProjectPage = () => {
             alert("Something went wrong!");
           }
     }
+
+    let tasks = async(projectId)=>{
+        let response = await fetch(`/api/project/cards/view/${projectId}`)
+        let data = await response.json()
+        setCards(data)
+     }
 
 
 
@@ -349,7 +358,20 @@ const ProjectPage = () => {
                 <div className='pname'>
                     {project.name}
                 </div>
-                <Cards projectId ={project.id}/>
+                <hr />
+                <div id="scroller-wrapper">
+                    <div className='scroller'>
+                        <div className='board-main-content'>
+                            <div className='board'>
+                                <div className='board-lists'>
+                                    {cards.map((card)=>(
+                                        <Cards card={card} key = {card.id}/>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                 
             </div>
         </div>
 
