@@ -22,6 +22,7 @@ class Card(models.Model):
     title = models.CharField(max_length=200, null=True, blank=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE,  null=True)
     labels = models.CharField(max_length=200, null=True, blank=True)
+    label_color = models.CharField(max_length=200, null=True, blank=True)
     asigned_To = models.ManyToManyField(CustomUser, blank=True, related_name='asignedMembers')
     deadlineDate = models.DateTimeField(null=True, blank=True)
 
