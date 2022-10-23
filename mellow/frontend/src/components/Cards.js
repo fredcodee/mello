@@ -9,6 +9,7 @@ let getTime = (card)=>{
 
 const Cards = ({card}) => {
     //yellow, blue, red , pink, orange
+
     return (
         <div className="list border border-start-0">
             <div className='list'>
@@ -17,7 +18,7 @@ const Cards = ({card}) => {
                 </div>
                 <hr/>
                 <div className='att'>
-                    <div className='label'>
+                    <div className='label' style={{backgroundColor:card.label_color}}>
                         <p>{card.labels}</p>
                     </div>
                     <div className='dl'>
