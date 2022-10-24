@@ -366,9 +366,9 @@ const ProjectPage = () => {
                             <div className='board'>
                                 <div className='board-lists'>
                                     {cards.map((card)=>(
-                                        <Cards card={card} key = {card.id}/>
+                                        <Cards card={card} members={members} key = {card.id}/>
                                     ))}
-                                    < AddCards />
+                                    < AddCards/>
                                 </div>
 
                             </div>

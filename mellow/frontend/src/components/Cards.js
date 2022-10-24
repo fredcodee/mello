@@ -2,18 +2,43 @@ import React from 'react'
 import { useEffect, useState } from 'react';
 import CreateProjectPopup from '../components/CreateProjectPopup';
 import '../Cards.css';
+import Dropdown from 'react-bootstrap/Dropdown';
+import {faUsers, faTrash } from '@fortawesome/fontawesome-free-solid'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
-let getTime = (card)=>{
-    return new Date(card.deadlineDate).toLocaleDateString()
-}
+const Cards = ({card, members}) => {
+    //view asigned members
+    let[asignedMembers, setAsignedMembers] = useState([])
 
-const Cards = ({card}) => {
-    //yellow, blue, red , pink, orange
+    useEffect(() => {
+        checkAsignedMembers()
+    },[members])
+
+    let checkAsignedMembers = ()=>{
+            let users = []
+            let asignedUsers = card.asigned_To
+            for(var i = 0 ; i < asignedUsers.length; i++ ){
+                for(var x = 0; x < members.length; x++){
+                    if(members[x].id === asignedUsers[i]){
+                        users.push(members[x])
+                    }
+                }
+            }
+       setAsignedMembers(users)
+    }
+
+    //asign members
+    //remove asigned members
+
     let [isOpen, setIsOpen] = useState(false)
 
     let togglePopup = () => {
         setIsOpen(!isOpen);
+    }
+
+    let getTime = (card)=>{
+        return new Date(card.deadlineDate).toLocaleDateString()
     }
 
     return (
@@ -33,8 +58,17 @@ const Cards = ({card}) => {
                     
                 </div>
                 <div className="cd as">
-                    Asigned Members ({card.asigned_To.length})
+                    <Dropdown>
+                        <Dropdown.Toggle id="dropdown-basic" variant="secondary" className='members'><p><span><FontAwesomeIcon icon={faUsers} /></span> Asigned Members ({card.asigned_To.length})</p></Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                            {asignedMembers.map((member) => (
+                                <Dropdown.Item key={member.id} eventKey={member.id} >{member.name}</Dropdown.Item>
+                            ))}
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </div>
+
                     <div className="cd">
                         <div className='name-time'>
                             <small className='cd-name'>User name</small>

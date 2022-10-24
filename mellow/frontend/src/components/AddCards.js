@@ -26,7 +26,7 @@ const AddCards = () => {
                         </div>
                         <div>
                             <select className="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                <option selected value="no label">Select Card Label</option>
+                                <option value="no label">Select Card Label</option>
                                 <option value="Update required">Update required</option>
                                 <option value="Done">Done</option>
                                 <option value="Ongoing">Ongoing</option>
@@ -38,7 +38,7 @@ const AddCards = () => {
                         </div>
                         <div style={{paddingTop:'1rem'}}>
                             <select className="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                <option selected value="grey">Select Label color</option>
+                                <option value="grey">Select Label color</option>
                                 <option value="red" style={{backgroundColor:'red'}}>Red</option>
                                 <option value="lime" style={{backgroundColor:'lime'}}>Lime</option>
                                 <option value="fuchsia" style={{backgroundColor:'fuchsia'}}>Fuchsia</option>
@@ -54,10 +54,6 @@ const AddCards = () => {
                         <div className="input-group mb-3">
                             <input type="date" className="form-control" aria-describedby="basic-addon1"/>
                         </div>
-                        <div className="input-group mb-3">
-                            asign to:
-                        </div>
-
                         <div style={{textAlign:'center'}}>
                             <button className='btn btn-primary'>Create</button>
                         </div>
