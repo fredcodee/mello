@@ -28,9 +28,6 @@ const Cards = ({card, members}) => {
        setAsignedMembers(users)
     }
 
-    //asign members
-    //remove asigned members
-
     let [isOpen, setIsOpen] = useState(false)
 
     let togglePopup = () => {
@@ -65,6 +62,7 @@ const Cards = ({card, members}) => {
                             {asignedMembers.map((member) => (
                                 <Dropdown.Item key={member.id} eventKey={member.id} >{member.name}</Dropdown.Item>
                             ))}
+                            <Dropdown.Item style={{color:'blue'}}>+ Asign Member</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>

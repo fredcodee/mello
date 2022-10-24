@@ -221,3 +221,19 @@ def view_cards(request, project_id):
     cards = Card.objects.filter(project = project).all()
     serializer = CardSerializer(cards, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def asign_users(request, card_id, user_id):
+    card = Card.objects.get(pk=card_id)
+    user =CustomUser.objects.get(pk =user_id)
+
+    card.asigned_To.add(user)
+    card.save()
+    http_status = status.HTTP_200_OK
+    return Response(status=http_status)
+
+
+
+
+
