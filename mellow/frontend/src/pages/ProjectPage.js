@@ -8,6 +8,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import CreateProjectPopup from '../components/CreateProjectPopup';
 import { useNavigate } from 'react-router-dom'
 import Cards from '../components/Cards';
+import AddCards from '../components/AddCards';
 
 const ProjectPage = () => {
     const { id } = useParams()
@@ -367,7 +368,9 @@ const ProjectPage = () => {
                                     {cards.map((card)=>(
                                         <Cards card={card} key = {card.id}/>
                                     ))}
+                                    < AddCards />
                                 </div>
+
                             </div>
                         </div>
                     </div>

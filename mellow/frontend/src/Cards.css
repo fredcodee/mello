@@ -12,7 +12,7 @@
 .board-lists{
     display: grid;
   grid-auto-columns: 272px;
-  grid-auto-rows: 49rem;
+  grid-auto-rows: 47rem;
   grid-auto-flow: column;
   grid-gap: 8px;
   overflow: auto;
@@ -43,6 +43,10 @@
   .add-card {
     padding-top: 10px;
     padding-bottom: 5px;
+    cursor: pointer;
+  }
+  .ad-card:hover{
+    background-color: white;
   }
 
   .as{
@@ -80,4 +84,11 @@
   .dl{
     background-color: black;
     color: white;
+  }
+
+  .addcd{
+    cursor: pointer;
+  }
+  .addcd:hover{
+    opacity: 0.3;
   }
