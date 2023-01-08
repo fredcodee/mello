@@ -234,6 +234,12 @@ def asign_users(request, card_id, user_id):
     return Response(status=http_status)
 
 
+@api_view(['PUT', 'GET'])
+def unasign_member(request, card_id, user_id):
+    card = Card.objects.get(pk=card_id)
+    user = CustomUser.objects.get(pk = user_id)
 
-
-
+    card.asigned_To.remove(user)
+    card.save()
+    http_status = status.HTTP_200_OK
+    return Response(status=http_status)

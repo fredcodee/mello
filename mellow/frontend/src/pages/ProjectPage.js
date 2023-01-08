@@ -366,9 +366,9 @@ const ProjectPage = () => {
                             <div className='board'>
                                 <div className='board-lists'>
                                     {cards.map((card)=>(
-                                        <Cards card={card} members={members} key = {card.id}/>
+                                        <Cards card={card} members={members} admins = {listOfAdmins} key = {card.id}/>
                                     ))}
-                                    < AddCards/>
+                                    {listOfAdmins.includes(user.id) ?(< AddCards/>): <div></div>}
                                 </div>
 
                             </div>

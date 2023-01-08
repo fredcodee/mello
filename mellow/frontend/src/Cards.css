@@ -91,3 +91,16 @@
   .addcd:hover{
     opacity: 0.3;
   }
+
+  .dropdown{
+    position: inherit !important;
+  }
+
+.mm{
+  text-align: center;
+}
+
+.unassignBtncon{
+  text-align: center;
+  padding: 1rem
+}
