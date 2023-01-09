@@ -6,6 +6,7 @@ from account.models import CustomUser
 from account.serializers import CustomUserSerializer
 from rest_framework import status
 import uuid
+import datetime
 
 
 def isUser_member(user, project):
@@ -241,5 +242,19 @@ def unasign_member(request, card_id, user_id):
 
     card.asigned_To.remove(user)
     card.save()
+    http_status = status.HTTP_200_OK
+    return Response(status=http_status)
+
+@api_view(['POST'])
+def create_card(request, project_id,  user_id):
+    manager = CustomUser.objects.get(pk=user_id)
+    project = Project.objects.get(pk=project_id)
+    data = request.data
+    date = data["deadlineDate"]
+    date_obj = datetime.datetime.strptime(date, '%Y-%m-%d')
+
+    card = Card(Manager=manager, title=data['title'], project=project, labels=data['labels'], label_color=data["labelColor"], deadlineDate=date_obj)
+    card.save()
+
     http_status = status.HTTP_200_OK
     return Response(status=http_status)

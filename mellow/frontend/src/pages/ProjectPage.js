@@ -368,7 +368,7 @@ const ProjectPage = () => {
                                     {cards.map((card)=>(
                                         <Cards card={card} members={members} admins = {listOfAdmins} key = {card.id}/>
                                     ))}
-                                    {listOfAdmins.includes(user.id) ?(< AddCards/>): <div></div>}
+                                    {listOfAdmins.includes(user.id) ?(< AddCards project={project.id} user ={user.id}/>): <div></div>}
                                 </div>
 
                             </div>
