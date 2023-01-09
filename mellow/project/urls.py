@@ -17,4 +17,5 @@ urlpatterns = [
     path('cards/asign/users/<int:card_id>/<int:user_id>', views.asign_users, name=' asign users'),
     path('cards/unasign/users/<int:card_id>/<int:user_id>', views.unasign_member,name="unasign user"),
     path('cards/create/<int:project_id>/<int:user_id>', views.create_card, name="create card"),
+    path('cards/delete/<int:card_id>/<int:user_id>', views.delete_card, name="delete card"),
 ]

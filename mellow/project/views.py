@@ -258,3 +258,16 @@ def create_card(request, project_id,  user_id):
 
     http_status = status.HTTP_200_OK
     return Response(status=http_status)
+
+
+@api_view(['POST'])
+def delete_card(request, card_id, user_id):
+    card = Card.objects.get(pk=card_id)
+    user =CustomUser.objects.get(pk=user_id)
+    if card.Manager == user or isUser_admin(user):
+        card.delete()
+        http_status = status.HTTP_200_OK
+    else:
+        http_status = status.HTTP_403_FORBIDDEN
+
+    return Response(status=http_status)
