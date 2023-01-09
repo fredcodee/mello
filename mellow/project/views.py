@@ -260,7 +260,7 @@ def create_card(request, project_id,  user_id):
     return Response(status=http_status)
 
 
-@api_view(['POST'])
+@api_view(['DELETE'])
 def delete_card(request, card_id, user_id):
     card = Card.objects.get(pk=card_id)
     user =CustomUser.objects.get(pk=user_id)

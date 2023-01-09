@@ -4,7 +4,7 @@ import AuthContext from '../context/AuthContext';
 import CreateProjectPopup from '../components/CreateProjectPopup';
 import '../Cards.css';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { faUsers, faTrash } from '@fortawesome/fontawesome-free-solid'
+import { faUsers, faTrash, faPenSquare } from '@fortawesome/fontawesome-free-solid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
@@ -79,6 +79,24 @@ const Cards = ({ card, members, admins }) => {
         }
     }
 
+    //delete card
+    let deleteCard = async(cardId, userId) =>{
+        await fetch(`/api/project/cards/delete/${cardId}/${userId}`, {
+            method: 'DELETE',
+          })
+            .then(response => {
+              if (response.ok) {
+                alert('Card deleted successfully');
+                window.location.reload();
+              } else {
+                alert('Error deleting card');
+              }
+            })
+            .catch(error => {
+              alert('Error:', error);
+            });
+    }
+
 
     return (
         <div className="list border border-start-0">
@@ -86,6 +104,13 @@ const Cards = ({ card, members, admins }) => {
                 <div className="list-title">
                     {card.title}
                 </div>
+                {admins.includes(user.id) ? 
+                    <div className='cardtools'>
+                        <span style={{color:'red'}}><FontAwesomeIcon icon={faPenSquare} style={{ paddingRight: "1rem" }}/></span>
+                        <span onClick={() => deleteCard(card.id, user.id)}>
+                            <FontAwesomeIcon icon={faTrash} style={{ paddingRight: "1rem" }} />
+                        </span>
+                    </div> : <div></div>}
                 <hr />
                 <div className='att'>
                     <div className='label' style={{ backgroundColor: card.label_color }}>
