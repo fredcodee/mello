@@ -18,4 +18,5 @@ urlpatterns = [
     path('cards/unasign/users/<int:card_id>/<int:user_id>', views.unasign_member,name="unasign user"),
     path('cards/create/<int:project_id>/<int:user_id>', views.create_card, name="create card"),
     path('cards/delete/<int:card_id>/<int:user_id>', views.delete_card, name="delete card"),
+    path('cards/edit/<int:card_id>/<int:user_id>', views.edit_card, name="edit card"),
 ]

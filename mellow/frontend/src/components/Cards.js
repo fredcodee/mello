@@ -13,8 +13,9 @@ const Cards = ({ card, members, admins }) => {
     let [asignedMembers, setAsignedMembers] = useState([])
     let [isOpen, setIsOpen] = useState(false)
     let [asignPopup, setAsignPopup] = useState(false)
-    let [unasignPopup, setUnasignPopup] = useState(false)
+    let [editPopup, setEditPopup] = useState(false)
     //for unassign
+    let [unasignPopup, setUnasignPopup] = useState(false)
     let [un_cardId, setUn_cardId] = useState('')
     let [un_userId, setUn_userId] = useState('')
 
@@ -41,9 +42,14 @@ const Cards = ({ card, members, admins }) => {
         setIsOpen(!isOpen);
     }
 
+    let toggleEditPopup=()=>{
+        setEditPopup(!editPopup)
+    }
+
     let toggleAsignPopup = () => {
         setAsignPopup(!asignPopup);
     }
+
 
     let toggleUnAsignPopup = (cardId,userId) => {
         setUn_cardId(cardId)
@@ -77,6 +83,20 @@ const Cards = ({ card, members, admins }) => {
         else {
             alert('oops try again later')
         }
+    }
+
+    // edit card
+    function handleSubmit(e) {
+        e.preventDefault();
+        onEdit({ title, labels, labelColor, deadlineDate });
+    }
+
+    function EditCard({ card, onEdit }) {
+        const [title, setTitle] = useState(card.title);
+        const [labels, setLabels] = useState(card.labels);
+        const [labelColor, setLabelColor] = useState(card.label_color);
+        const [deadlineDate, setDeadlineDate] = useState(card.deadlineDate);
+
     }
 
     //delete card
@@ -149,6 +169,7 @@ const Cards = ({ card, members, admins }) => {
                 </div>
 
                 {/* popup contents */}
+                {/* add comment */}
                 {isOpen && <CreateProjectPopup
                     content={<>
                         <div className='title'>
@@ -163,6 +184,7 @@ const Cards = ({ card, members, admins }) => {
                     </>}
                     handleClose={togglePopup}
                 />}
+                {/* assign users */}
                 {asignPopup && <CreateProjectPopup
                     content={<>
                         <div className='title'>
@@ -182,6 +204,7 @@ const Cards = ({ card, members, admins }) => {
                     </>}
                     handleClose={toggleAsignPopup}
                 />}
+                {/* unassign users */}
                 {unasignPopup && <CreateProjectPopup
                     content={<>
                         <div className='title'>
@@ -193,6 +216,26 @@ const Cards = ({ card, members, admins }) => {
                     cardId = {un_cardId}
                     userId = {un_userId}
                 />}
+                {/* edit card */}
+                {editPopup && <CreateProjectPopup
+                    content={<>
+                    <div className='title'>
+                        <h3>Edit Project</h3>
+                    </div>
+                    <div className="input-group mb-3">
+                        <label> Name:  </label>
+                        <input type="text" className="form-control" placeholder={project.name} aria-label="Username" aria-describedby="basic-addon1" onChange={e => setChangeProjectName(e.target.value)}/>
+                    </div>
+                    <div className="input-group">
+                        <label> Description:  </label>
+                        <textarea className="form-control" aria-label="With textarea" placeholder ={project.description} onChange={e => setChangeProjectDescription(e.target.value)}></textarea>
+                    </div>
+                    <div style={{ textAlign: 'center', paddingTop: '1rem' }}>
+                        <button className='btn btn-primary' onClick={editProject}>Save Changes</button>
+                    </div>
+                    </>}
+                    handleClose={toggleEditPopup}
+                 />}
                 
             </div>
         </div>

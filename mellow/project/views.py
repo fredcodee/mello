@@ -271,3 +271,23 @@ def delete_card(request, card_id, user_id):
         http_status = status.HTTP_403_FORBIDDEN
 
     return Response(status=http_status)
+
+@api_view(['PUT'])
+def edit_card(request, card_id, user_id):
+    card = Card.objects.get(pk=card_id)
+    user = CustomUser.objects.get(pk=user_id)
+
+    if card.Manager == user or isUser_admin(user):
+        data = request.data
+        date = data["deadlineDate"]
+        date_obj = datetime.datetime.strptime(date, '%Y-%m-%d')
+        card.title = data['title']
+        card.labels = data['labels']
+        card.label_color = data["label_color"]
+        card.deadlineDate = date_obj
+        card.save()
+        http_status = status.HTTP_200_OK
+    else:
+        http_status = status.HTTP_403_FORBIDDEN
+
+    return Response(status=http_status)
