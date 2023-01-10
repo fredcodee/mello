@@ -283,7 +283,7 @@ def edit_card(request, card_id, user_id):
         date_obj = datetime.datetime.strptime(date, '%Y-%m-%d')
         card.title = data['title']
         card.labels = data['labels']
-        card.label_color = data["label_color"]
+        card.label_color = data["labelColor"]
         card.deadlineDate = date_obj
         card.save()
         http_status = status.HTTP_200_OK

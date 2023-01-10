@@ -18,6 +18,12 @@ const Cards = ({ card, members, admins }) => {
     let [unasignPopup, setUnasignPopup] = useState(false)
     let [un_cardId, setUn_cardId] = useState('')
     let [un_userId, setUn_userId] = useState('')
+    // for edit
+    let [cardId, setCardId] = useState('')
+    let [title, setTitle] = useState('');
+    let [labels, setLabels] = useState('');
+    let [labelColor, setLabelColor] = useState('');
+    let [deadlineDate, setDeadlineDate] = useState('');
 
     useEffect(() => {
         checkAsignedMembers()
@@ -42,7 +48,12 @@ const Cards = ({ card, members, admins }) => {
         setIsOpen(!isOpen);
     }
 
-    let toggleEditPopup=()=>{
+    let toggleEditPopup = (card) => {
+        setCardId(card.id)
+        setTitle(card.title);
+        setLabels(card.labels);
+        setLabelColor(card.label_color);
+        setDeadlineDate(card.deadlineDate);
         setEditPopup(!editPopup)
     }
 
@@ -51,7 +62,7 @@ const Cards = ({ card, members, admins }) => {
     }
 
 
-    let toggleUnAsignPopup = (cardId,userId) => {
+    let toggleUnAsignPopup = (cardId, userId) => {
         setUn_cardId(cardId)
         setUn_userId(userId)
         setUnasignPopup(!unasignPopup);
@@ -62,7 +73,7 @@ const Cards = ({ card, members, admins }) => {
     }
 
     //asign users to card
-    let  asignUsersToCard= async(cardId, userId, name)=>{
+    let asignUsersToCard = async (cardId, userId, name) => {
         let response = await fetch(`/api/project/cards/asign/users/${cardId}/${userId}`)
         if (response.status === 200) {
             alert(`you have assigned ${name} to this card`)
@@ -74,7 +85,7 @@ const Cards = ({ card, members, admins }) => {
     }
 
     //unasign users from a card
-    let unasignUsers = async(cardId, userId) =>{
+    let unasignUsers = async (cardId, userId) => {
         let response = await fetch(`/api/project/cards/unasign/users/${cardId}/${userId}`)
         if (response.status === 200) {
             alert(`you have Unassigned user from this card`)
@@ -86,34 +97,48 @@ const Cards = ({ card, members, admins }) => {
     }
 
     // edit card
-    function handleSubmit(e) {
+    let handleSubmit = (e) => {
         e.preventDefault();
-        onEdit({ title, labels, labelColor, deadlineDate });
+        onEdit({ title, labels, labelColor, deadlineDate }, cardId);
     }
 
-    function EditCard({ card, onEdit }) {
-        const [title, setTitle] = useState(card.title);
-        const [labels, setLabels] = useState(card.labels);
-        const [labelColor, setLabelColor] = useState(card.label_color);
-        const [deadlineDate, setDeadlineDate] = useState(card.deadlineDate);
-
+    let onEdit = async (updatedCard, cardId) => {
+        // Make a PUT request to the server to update the card
+        await fetch(`/api/project/cards/edit/${cardId}/${user.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedCard)
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    alert("New Changes Saved!");
+                    window.location.reload();
+                } else {
+                    alert("Error updating card");
+                }
+            })
+            .catch(error => {
+                alert("Error:", error);
+            });
     }
 
     //delete card
-    let deleteCard = async(cardId, userId) =>{
+    let deleteCard = async (cardId, userId) => {
         await fetch(`/api/project/cards/delete/${cardId}/${userId}`, {
             method: 'DELETE',
-          })
+        })
             .then(response => {
-              if (response.ok) {
-                alert('Card deleted successfully');
-                window.location.reload();
-              } else {
-                alert('Error deleting card');
-              }
+                if (response.ok) {
+                    alert('Card deleted successfully');
+                    window.location.reload();
+                } else {
+                    alert('Error deleting card');
+                }
             })
             .catch(error => {
-              alert('Error:', error);
+                alert('Error:', error);
             });
     }
 
@@ -124,9 +149,9 @@ const Cards = ({ card, members, admins }) => {
                 <div className="list-title">
                     {card.title}
                 </div>
-                {admins.includes(user.id) ? 
+                {admins.includes(user.id) ?
                     <div className='cardtools'>
-                        <span style={{color:'red'}}><FontAwesomeIcon icon={faPenSquare} style={{ paddingRight: "1rem" }}/></span>
+                        <span style={{ color: 'red' }}><FontAwesomeIcon icon={faPenSquare} style={{ paddingRight: "1rem" }} onClick={toggleEditPopup.bind(this, card)} /></span>
                         <span onClick={() => deleteCard(card.id, user.id)}>
                             <FontAwesomeIcon icon={faTrash} style={{ paddingRight: "1rem" }} />
                         </span>
@@ -148,7 +173,7 @@ const Cards = ({ card, members, admins }) => {
                         <Dropdown.Menu>
                             {admins.includes(user.id) ? (<Dropdown.Item style={{ color: 'blue' }} onClick={toggleAsignPopup}>+ Assign Member</Dropdown.Item>) : <div></div>}
                             {asignedMembers.map((member) => (
-                                <Dropdown.Item key={member.id} style={{ cursor : 'default'}} eventKey={member.id} >{member.name} {admins.includes(user.id) ? (<span style={{ color: 'red', cursor : 'pointer'}} onClick={toggleUnAsignPopup.bind(this, card.id, member.id)}><FontAwesomeIcon icon={faTrash} /></span>) : <div></div>}</Dropdown.Item>
+                                <Dropdown.Item key={member.id} style={{ cursor: 'default' }} eventKey={member.id} >{member.name} {admins.includes(user.id) ? (<span style={{ color: 'red', cursor: 'pointer' }} onClick={toggleUnAsignPopup.bind(this, card.id, member.id)}><FontAwesomeIcon icon={faTrash} /></span>) : <div></div>}</Dropdown.Item>
                             ))}
                         </Dropdown.Menu>
                     </Dropdown>
@@ -193,9 +218,9 @@ const Cards = ({ card, members, admins }) => {
                         <div>
                             <ul>
                                 {members.map((member, index) => (
-                                    asignedMembers.includes(member)? (
+                                    asignedMembers.includes(member) ? (
                                         <div></div>
-                                    ) : <li key={index} className='rounded-pill mm' onClick={asignUsersToCard.bind(this,card.id, member.id, member.name)}>
+                                    ) : <li key={index} className='rounded-pill mm' onClick={asignUsersToCard.bind(this, card.id, member.id, member.name)}>
                                         {member.name}
                                     </li>
                                 ))}
@@ -212,31 +237,80 @@ const Cards = ({ card, members, admins }) => {
                         </div>
                     </>}
                     handleClose={toggleUnAsignPopup}
-                    unasignUsers = {unasignUsers}
-                    cardId = {un_cardId}
-                    userId = {un_userId}
+                    unasignUsers={unasignUsers}
+                    cardId={un_cardId}
+                    userId={un_userId}
                 />}
                 {/* edit card */}
                 {editPopup && <CreateProjectPopup
                     content={<>
-                    <div className='title'>
-                        <h3>Edit Project</h3>
-                    </div>
-                    <div className="input-group mb-3">
-                        <label> Name:  </label>
-                        <input type="text" className="form-control" placeholder={project.name} aria-label="Username" aria-describedby="basic-addon1" onChange={e => setChangeProjectName(e.target.value)}/>
-                    </div>
-                    <div className="input-group">
-                        <label> Description:  </label>
-                        <textarea className="form-control" aria-label="With textarea" placeholder ={project.description} onChange={e => setChangeProjectDescription(e.target.value)}></textarea>
-                    </div>
-                    <div style={{ textAlign: 'center', paddingTop: '1rem' }}>
-                        <button className='btn btn-primary' onClick={editProject}>Save Changes</button>
-                    </div>
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="title">Title:</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="title"
+                                    value={title}
+                                    onChange={e => setTitle(e.target.value)}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="labels">Labels:</label>
+                                <select
+                                    className="form-control"
+                                    id="labels"
+                                    value={labels}
+                                    onChange={e => setLabels(e.target.value)}
+                                >
+                                    <option value="no label">No Label</option>
+                                    <option value="Update required">Update required</option>
+                                    <option value="Done">Done</option>
+                                    <option value="Ongoing">Ongoing</option>
+                                    <option value="Important">Important</option>
+                                    <option value="urgent">Urgent</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                    <option value="Onhold">Onhold</option>
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="label-color">Label Color:</label>
+                                <select
+                                    className="form-control"
+                                    id="label-color"
+                                    value={labelColor}
+                                    onChange={e => setLabelColor(e.target.value)}
+                                >
+                                    <option value="red" style={{ backgroundColor: 'red' }}>Red</option>
+                                    <option value="lime" style={{ backgroundColor: 'lime' }}>Lime</option>
+                                    <option value="fuchsia" style={{ backgroundColor: 'fuchsia' }}>Fuchsia</option>
+                                    <option value="yellow" style={{ backgroundColor: 'yellow' }}>Yellow</option>
+                                    <option value="aqua" style={{ backgroundColor: 'aqua' }}>Aqua</option>
+                                    <option value="darkorange" style={{ backgroundColor: 'darkorange' }}>Orange</option>
+                                    <option value="moccasin" style={{ backgroundColor: 'moccasin' }}>Moccasin</option>
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="deadline-date">Deadline Date:</label>
+                                <input
+                                    type="date"
+                                    className="form-control"
+                                    id="deadline-date"
+                                    value={deadlineDate}
+                                    onChange={e => setDeadlineDate(e.target.value)}
+                                />
+                            </div>
+                            <div style={{ textAlign: 'center', paddingTop: '1rem' }}>
+
+                                <button type="submit" className="btn btn-primary">
+                                    Edit Card
+                                </button>
+                            </div>
+                        </form>
                     </>}
                     handleClose={toggleEditPopup}
-                 />}
-                
+                />}
+
             </div>
         </div>
     )
