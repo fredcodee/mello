@@ -151,8 +151,8 @@ const Cards = ({ card, members, admins }) => {
                 </div>
                 {admins.includes(user.id) ?
                     <div className='cardtools'>
-                        <span style={{ color: 'red' }}><FontAwesomeIcon icon={faPenSquare} style={{ paddingRight: "1rem" }} onClick={toggleEditPopup.bind(this, card)} /></span>
-                        <span onClick={() => deleteCard(card.id, user.id)}>
+                        <span style={{ color: 'blue' }}><FontAwesomeIcon icon={faPenSquare} style={{ paddingRight: "1rem" }} onClick={toggleEditPopup.bind(this, card)} /></span>
+                        <span style={{ color: 'red' }} onClick={() => deleteCard(card.id, user.id)}>
                             <FontAwesomeIcon icon={faTrash} style={{ paddingRight: "1rem" }} />
                         </span>
                     </div> : <div></div>}

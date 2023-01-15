@@ -33,10 +33,10 @@ class Card(models.Model):
 
 
 class Comment(models.Model):
-    comment =models.TextField(max_length=400, null=True, blank=True)
+    comment =models.CharField(max_length=400, null=True, blank=True)
     timePosted = models.DateTimeField(auto_now_add=True)
-    cardId =models.ForeignKey(Card, on_delete=models.CASCADE)
+    card =models.ForeignKey(Card, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,  null=True)
 
     def __str__(self):
-        return self.user
+        return "%s - %s"% (self.user.name, self.comment)
