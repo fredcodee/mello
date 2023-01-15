@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect, useState, useContext } from 'react';
 import AuthContext from '../context/AuthContext';
 import CreateProjectPopup from '../components/CreateProjectPopup';
+import Comments from './Comments';
 import '../Cards.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { faUsers, faTrash, faPenSquare } from '@fortawesome/fontawesome-free-solid'
@@ -179,19 +180,7 @@ const Cards = ({ card, members, admins }) => {
                     </Dropdown>
                 </div>
 
-                <div className="cd">
-                    <div className='name-time'>
-                        <small className='cd-name'>User name</small>
-                        <small className='cd-time'>2424444</small>
-                    </div>
-                    <hr />
-                    <div className='comment'>
-                        <p>dcnjldljjlljl</p>
-                    </div>
-                </div>
-                <div className="add-card" onClick={togglePopup}>
-                    + Add Comment
-                </div>
+                <Comments card={card}/>
 
                 {/* popup contents */}
                 {/* add comment */}

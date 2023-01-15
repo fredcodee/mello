@@ -294,13 +294,9 @@ def edit_card(request, card_id, user_id):
 
 
 @api_view(['GET'])
-def view_comment(request, project_id, user_id, card_id, ):
-    project = Project.objects.get(pk = project_id)
+def view_comment(request, card_id, ):
     card = Card.objects.get(pk = card_id)
-    user = CustomUser.objects.get(pk = user_id)
-
-    #check if user is in the project
-    if isUser_member(user, project) and card and user:
+    if card:
         #get all comments in the card
         comments = Comment.objects.filter(card = card).all()
         serializer = CommentSerializer(comments, many=True)
