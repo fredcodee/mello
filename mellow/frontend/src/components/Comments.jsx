@@ -6,7 +6,7 @@ const Comments = ({ card }) => {
 
     useEffect(() => {
         getComments()
-    })
+    }, [card.id])
 
     //api call to get comments
     let getComments = async () => {
