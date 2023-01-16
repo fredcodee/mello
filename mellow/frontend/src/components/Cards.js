@@ -180,10 +180,7 @@ const Cards = ({ card, members, admins }) => {
                     </Dropdown>
                 </div>
 
-                <Comments card={card}/>
-
-                {/* popup contents */}
-                {/* add comment */}
+                <Comments card={card} members ={members} />
                 {isOpen && <CreateProjectPopup
                     content={<>
                         <div className='title'>

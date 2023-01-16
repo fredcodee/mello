@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 
-const Comments = ({ card }) => {
+const Comments = ({ card , members}) => {
     let [comments, setComments] = useState([])
 
     useEffect(() => {
@@ -15,6 +15,17 @@ const Comments = ({ card }) => {
         setComments(data)
     }
 
+    //get username
+    let getuserName = (user_id)=>{
+        for(var i =0; i < members.length; i++){
+            if(user_id === members[i].id){
+                return members[i].name
+            }
+            return 'Anon User'
+        }
+    }
+
+
     return (
         <div>
             <div className="cd">
@@ -24,9 +35,9 @@ const Comments = ({ card }) => {
                     </div>
                 ) : (
                     comments.map((comment) => (
-                        <div>
+                        <div key={comment.id}>
                             <div className='name-time'>
-                                <small className='cd-name'>User name</small>
+                                <small className='cd-name'>{getuserName(comment.user)}</small>
                                 <small className='cd-time'>{new Date(comment.timePosted).toLocaleString()}</small>
                             </div>
                             <hr />

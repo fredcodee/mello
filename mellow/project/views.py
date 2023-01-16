@@ -302,3 +302,9 @@ def view_comment(request, card_id, ):
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
     return Response(status=status.HTTP_403_FORBIDDEN)
+
+@api_view(['POST'])
+def create_comment(request,user_id, card_id, project_id):
+    user = CustomUser.get.objects(pk = user_id)
+    #check if user is in project and user is asigned the card
+    
