@@ -107,3 +107,7 @@
 .cardtools{
   cursor: pointer;
 }
+
+.comment-details{
+  padding-top: 1rem;
+}
