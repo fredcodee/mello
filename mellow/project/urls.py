@@ -20,4 +20,6 @@ urlpatterns = [
     path('cards/delete/<int:card_id>/<int:user_id>', views.delete_card, name="delete card"),
     path('cards/edit/<int:card_id>/<int:user_id>', views.edit_card, name="edit card"),
     path('cards/comments/view/<int:card_id>', views.view_comment, name="view comments"),
+    path('cards/comments/create/<int:user_id>/<int:project_id>/<int:card_id>', views.create_comment, name="create comments"),
+    
 ]

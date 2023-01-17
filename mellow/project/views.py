@@ -218,8 +218,8 @@ def edit_project(request, project_id, owner_id):
 
 @api_view(['GET'])
 def view_cards(request, project_id):
-    project = Project.objects.get(pk = project_id)
-    cards = Card.objects.filter(project = project).all()
+    project = Project.objects.get(pk=project_id)
+    cards = Card.objects.filter(project=project).all()
     serializer = CardSerializer(cards, many=True)
     return Response(serializer.data)
 
@@ -227,7 +227,7 @@ def view_cards(request, project_id):
 @api_view(['GET'])
 def asign_users(request, card_id, user_id):
     card = Card.objects.get(pk=card_id)
-    user =CustomUser.objects.get(pk =user_id)
+    user = CustomUser.objects.get(pk=user_id)
 
     card.asigned_To.add(user)
     card.save()
@@ -238,12 +238,13 @@ def asign_users(request, card_id, user_id):
 @api_view(['PUT', 'GET'])
 def unasign_member(request, card_id, user_id):
     card = Card.objects.get(pk=card_id)
-    user = CustomUser.objects.get(pk = user_id)
+    user = CustomUser.objects.get(pk=user_id)
 
     card.asigned_To.remove(user)
     card.save()
     http_status = status.HTTP_200_OK
     return Response(status=http_status)
+
 
 @api_view(['POST'])
 def create_card(request, project_id,  user_id):
@@ -253,7 +254,8 @@ def create_card(request, project_id,  user_id):
     date = data["deadlineDate"]
     date_obj = datetime.datetime.strptime(date, '%Y-%m-%d')
 
-    card = Card(Manager=manager, title=data['title'], project=project, labels=data['labels'], label_color=data["labelColor"], deadlineDate=date_obj)
+    card = Card(Manager=manager, title=data['title'], project=project,
+                labels=data['labels'], label_color=data["labelColor"], deadlineDate=date_obj)
     card.save()
 
     http_status = status.HTTP_200_OK
@@ -263,7 +265,7 @@ def create_card(request, project_id,  user_id):
 @api_view(['DELETE'])
 def delete_card(request, card_id, user_id):
     card = Card.objects.get(pk=card_id)
-    user =CustomUser.objects.get(pk=user_id)
+    user = CustomUser.objects.get(pk=user_id)
     if card.Manager == user or isUser_admin(user):
         card.delete()
         http_status = status.HTTP_200_OK
@@ -271,6 +273,7 @@ def delete_card(request, card_id, user_id):
         http_status = status.HTTP_403_FORBIDDEN
 
     return Response(status=http_status)
+
 
 @api_view(['PUT'])
 def edit_card(request, card_id, user_id):
@@ -295,16 +298,29 @@ def edit_card(request, card_id, user_id):
 
 @api_view(['GET'])
 def view_comment(request, card_id, ):
-    card = Card.objects.get(pk = card_id)
+    card = Card.objects.get(pk=card_id)
     if card:
         #get all comments in the card
-        comments = Comment.objects.filter(card = card).all()
+        comments = Comment.objects.filter(card=card).all()
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
     return Response(status=status.HTTP_403_FORBIDDEN)
 
+
 @api_view(['POST'])
-def create_comment(request,user_id, card_id, project_id):
-    user = CustomUser.get.objects(pk = user_id)
-    #check if user is in project and user is asigned the card
-    
+def create_comment(request, user_id, card_id, project_id):
+    user = CustomUser.objects.get(pk=user_id)
+    card = Card.objects.get(pk=card_id)
+    project = Project.objects.get(pk=project_id)
+
+    if not (isUser_member(user, project) or isUser_admin(user, project)):
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    if not (user in card.asigned_To.all() or isUser_admin(user, project)):
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    data = request.data
+    new_comment = Comment.objects.create(comment=data['comment'], card=card, user=user)
+    new_comment.save()
+    serializers = CommentSerializer(new_comment, many=False)
+    return Response(serializers.data)
