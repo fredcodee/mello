@@ -1,14 +1,17 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
+import CreateProjectPopup from '../components/CreateProjectPopup';
 
-const Comments = ({ card , members}) => {
+const Comments = ({ card , members, project, user}) => {
     let [comments, setComments] = useState([])
     let [userLookup, setUserLookup] = useState('')
+    let [createCommentPopup, setCreateCommentPopup] = useState(false)
+    let [inputValue, setInputValue] = useState('');
 
     useEffect(() => {
         getComments()
         createUserLookup()
-    }, [card.id])
+    }, [card.id, members])
 
     //api call to get comments
     let getComments = async () => {
@@ -17,17 +20,6 @@ const Comments = ({ card , members}) => {
         setComments(data)
     }
 
-    //get username
-    // let getuserName = (user_id)=>{
-    //     console.log(members)
-    //     console.log(user_id)
-    //     for(var i =0; i < members.length; i++){
-    //         if(user_id === members[i].id){
-    //             return members[i].name
-    //         }
-    //         return 'Anon User'
-    //     }
-    // }
     let createUserLookup = () => {
         const users = {}
         members.forEach(member => {
@@ -39,6 +31,38 @@ const Comments = ({ card , members}) => {
     let getuserName = (user_id) => {
         return userLookup[user_id] || 'Anon User'
     }
+
+    //create comment popup
+    let togglePopup = () => {
+        setCreateCommentPopup(!createCommentPopup);
+    }
+
+    async function handlePostClick(e) {
+        e.preventDefault();
+        const comment = inputValue;
+
+        try {
+            const body = { comment };
+            const response = await fetch(
+                `/api/project/cards/comments/create/${user.id}/${project.id}/${card.id}`,
+                {
+                    method: 'POST',
+                    body: JSON.stringify(body),
+                    headers: { 'Content-Type': 'application/json' },
+                }
+            );
+
+            if (!response.ok) {
+                alert("Sorry an error occured")
+            }
+
+            alert("Comment Added")
+            window.location.reload();
+        } catch (err) {
+            alert("Sorry an error occured")
+        } 
+    }
+
 
 
     return (
@@ -65,9 +89,25 @@ const Comments = ({ card , members}) => {
 
             </div>
 
-            <div className="add-card">
-                <p>+ Add Comment</p>
+            <div className="add-card list-title addcd">
+                <p onClick={togglePopup}>+ Add Comment</p>
             </div>
+
+            {/* popup for comments */}
+            {createCommentPopup && <CreateProjectPopup
+                    content={<>
+                        <div className='title'>
+                            <h3>Add Comment</h3>
+                        </div>
+                        <div className="input-group mb-3">
+                            <input type="text" className="form-control" placeholder="Type a comment" aria-label="Username" aria-describedby="basic-addon1"  onChange={e => setInputValue(e.target.value)} />
+                        </div>
+                        <div style={{ textAlign: 'center' }}>
+                            <button className='btn btn-primary'  onClick={handlePostClick}>Post</button>
+                        </div>
+                    </>}
+                    handleClose={togglePopup}
+                />}
         </div>
     )
 }

@@ -9,10 +9,9 @@ import { faUsers, faTrash, faPenSquare } from '@fortawesome/fontawesome-free-sol
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
-const Cards = ({ card, members, admins }) => {
+const Cards = ({ card, members, admins , project}) => {
     let { user } = useContext(AuthContext)
     let [asignedMembers, setAsignedMembers] = useState([])
-    let [isOpen, setIsOpen] = useState(false)
     let [asignPopup, setAsignPopup] = useState(false)
     let [editPopup, setEditPopup] = useState(false)
     //for unassign
@@ -42,11 +41,6 @@ const Cards = ({ card, members, admins }) => {
             }
         }
         setAsignedMembers(users)
-    }
-
-
-    let togglePopup = () => {
-        setIsOpen(!isOpen);
     }
 
     let toggleEditPopup = (card) => {
@@ -180,21 +174,8 @@ const Cards = ({ card, members, admins }) => {
                     </Dropdown>
                 </div>
 
-                <Comments card={card} members ={members} />
-                {isOpen && <CreateProjectPopup
-                    content={<>
-                        <div className='title'>
-                            <h3>Add Comment</h3>
-                        </div>
-                        <div className="input-group mb-3">
-                            <input type="text" className="form-control" placeholder="Add a comment" aria-label="Username" aria-describedby="basic-addon1" />
-                        </div>
-                        <div style={{ textAlign: 'center' }}>
-                            <button className='btn btn-primary'>Post</button>
-                        </div>
-                    </>}
-                    handleClose={togglePopup}
-                />}
+                <Comments card={card} members ={members} project = {project} user={user} />
+
                 {/* assign users */}
                 {asignPopup && <CreateProjectPopup
                     content={<>

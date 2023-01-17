@@ -1,6 +1,6 @@
 import React from 'react'
-import { useEffect, useState } from 'react';
-import CreateProjectPopup from '../components/CreateProjectPopup';
+import { useState } from 'react';
+import CreateProjectPopup from './CreateProjectPopup';
 import '../Cards.css';
 
 const AddCards = ({project, user}) => {
