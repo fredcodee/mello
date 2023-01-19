@@ -324,3 +324,14 @@ def create_comment(request, user_id, card_id, project_id):
     new_comment.save()
     serializers = CommentSerializer(new_comment, many=False)
     return Response(serializers.data)
+
+
+@api_view(['DELETE'])
+def delete_comment(request, user_id, comment_id):
+    user = CustomUser.objects.get(pk = user_id)
+    comment = Comment.objects.get(pk=comment_id)
+
+    if comment.user == user:
+        comment.delete()
+        return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_403_FORBIDDEN)
