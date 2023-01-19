@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
+import { Link } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import { useParams } from "react-router-dom"
 import '../Projectpage.css';
@@ -203,7 +204,7 @@ const ProjectPage = () => {
         <div className='row'>
             <div className='col-2 side-menu'>
                 <div className='side-name'>
-                    <h3>{user.name}'s workspace <span><FontAwesomeIcon icon={faChevronLeft} style={{ fontSize: '14px' }} /></span></h3>
+                    <Link to = {"/"} style={{ color:"white" ,fontWeight: 'bold', textDecoration: 'none' }}><h3 >{user.name}'s workspace <span><FontAwesomeIcon icon={faChevronLeft} style={{ fontSize: '14px' }} /></span></h3></Link>
                     {listOfAdmins.includes(user.id) ? (<small>Admin</small>) : <p>Member</p>}
                 </div>
                 <hr style={{ color: 'white' }} />

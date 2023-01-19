@@ -13,17 +13,14 @@ const Header = () => {
          <Link to = "/" className="navbar-brand" > MELLOW</Link>
         </div>
         <nav>
-          <div className="nav-mobile"><a id="nav-toggle" href="#!"><span></span></a></div>
+          <div className="nav-mobile"><Link id="nav-toggle" to  = ""><span></span></Link></div>
           { user ? 
           (<ul className="nav-list">
             <li>
-              <a href="#!">Home</a>
+              <Link to = "/">Home</Link>
             </li>
             <li>
-              <a href="#!">Create Project</a>
-            </li>
-            <li>
-              <a href="#!">Welcome, {user.name}</a>
+              <Link to  = "">Welcome, {user.name}</Link>
             </li>
             <li>
             <Link to = "/logout"> Logout</Link>
@@ -31,7 +28,7 @@ const Header = () => {
           </ul>)  : (
             <ul className="nav-list">
             <li>
-              <a href="#!">Home</a>
+              <Link to  = "">Home</Link>
             </li>
             <li>
               <Link to = "/login"> Login</Link>
@@ -40,7 +37,7 @@ const Header = () => {
               <Link to = "/register"> Create An Account</Link>
             </li>
             <li>
-              <a href="#!">Contact</a>
+              <Link to  = "">Contact</Link>
             </li>
             </ul>
             )}
