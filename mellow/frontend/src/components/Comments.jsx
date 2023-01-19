@@ -100,9 +100,10 @@ const Comments = ({ card, members, project, user }) => {
                             </div>
                             <div className='comment'>
                                 <p>{comment.comment}</p>
-                                <span style={{ color: 'red' }} onClick={() => deleteComment(comment.id, user.id)}>
+                                {comment.user === user.id ? <span style={{ color: 'red' }} onClick={() => deleteComment(comment.id, user.id)}>
                                     <FontAwesomeIcon icon={faTrash} style={{ paddingRight: "1rem" }} />
-                                </span>
+                                </span>:<div></div>}
+                                
                             </div>
                             <hr />
                         </div>
