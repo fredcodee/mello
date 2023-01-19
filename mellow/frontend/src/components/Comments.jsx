@@ -1,8 +1,10 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import CreateProjectPopup from '../components/CreateProjectPopup';
+import { faTrash} from '@fortawesome/fontawesome-free-solid'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const Comments = ({ card , members, project, user}) => {
+const Comments = ({ card, members, project, user }) => {
     let [comments, setComments] = useState([])
     let [userLookup, setUserLookup] = useState('')
     let [createCommentPopup, setCreateCommentPopup] = useState(false)
@@ -60,7 +62,24 @@ const Comments = ({ card , members, project, user}) => {
             window.location.reload();
         } catch (err) {
             alert("Sorry an error occured")
-        } 
+        }
+    }
+
+    let deleteComment = async (commentId, userId) => {
+        await fetch(`/api/project/cards/comments/delete/${userId}/${commentId}`, {
+            method: 'DELETE',
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Comment deleted');
+                    window.location.reload();
+                } else {
+                    alert('Error deleting comment');
+                }
+            })
+            .catch(error => {
+                alert('Error:', error);
+            });
     }
 
 
@@ -81,6 +100,9 @@ const Comments = ({ card , members, project, user}) => {
                             </div>
                             <div className='comment'>
                                 <p>{comment.comment}</p>
+                                <span style={{ color: 'red' }} onClick={() => deleteComment(comment.id, user.id)}>
+                                    <FontAwesomeIcon icon={faTrash} style={{ paddingRight: "1rem" }} />
+                                </span>
                             </div>
                             <hr />
                         </div>
@@ -95,19 +117,19 @@ const Comments = ({ card , members, project, user}) => {
 
             {/* popup for comments */}
             {createCommentPopup && <CreateProjectPopup
-                    content={<>
-                        <div className='title'>
-                            <h3>Add Comment</h3>
-                        </div>
-                        <div className="input-group mb-3">
-                            <input type="text" className="form-control" placeholder="Type a comment" aria-label="Username" aria-describedby="basic-addon1"  onChange={e => setInputValue(e.target.value)} />
-                        </div>
-                        <div style={{ textAlign: 'center' }}>
-                            <button className='btn btn-primary'  onClick={handlePostClick}>Post</button>
-                        </div>
-                    </>}
-                    handleClose={togglePopup}
-                />}
+                content={<>
+                    <div className='title'>
+                        <h3>Add Comment</h3>
+                    </div>
+                    <div className="input-group mb-3">
+                        <input type="text" className="form-control" placeholder="Type a comment" aria-label="Username" aria-describedby="basic-addon1" onChange={e => setInputValue(e.target.value)} />
+                    </div>
+                    <div style={{ textAlign: 'center' }}>
+                        <button className='btn btn-primary' onClick={handlePostClick}>Post</button>
+                    </div>
+                </>}
+                handleClose={togglePopup}
+            />}
         </div>
     )
 }
