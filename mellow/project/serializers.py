@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Project, Card, Comment
+from .models import Project, Card, Comment, Notifications
 
 class ProjectSerializer(ModelSerializer):
     class Meta:
@@ -14,4 +14,10 @@ class CardSerializer(ModelSerializer):
 class CommentSerializer(ModelSerializer):
     class Meta:
         model = Comment
+        fields = '__all__'
+
+
+class Notifications(ModelSerializer):
+    class Meta:
+        model = Notifications
         fields = '__all__'

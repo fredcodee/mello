@@ -42,7 +42,7 @@ class Comment(models.Model):
         return "%s - %s"% (self.user.name, self.comment)
 
 
-class Notifictions(models.Model):
+class Notifications(models.Model):
     message = models.CharField(max_length=255)
     sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='sender')
     recipient = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='recipient')
