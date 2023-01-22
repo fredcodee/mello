@@ -17,7 +17,7 @@ class CommentSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class Notifications(ModelSerializer):
+class NotificationSerializer(ModelSerializer):
     class Meta:
         model = Notifications
         fields = '__all__'

@@ -1,12 +1,14 @@
-from .models import Project, Card, Comment
+from .models import Project, Card, Comment, Notifications
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializers import ProjectSerializer, CardSerializer, CommentSerializer
+from .serializers import ProjectSerializer, CardSerializer, CommentSerializer, NotificationSerializer
 from account.models import CustomUser
 from account.serializers import CustomUserSerializer
 from rest_framework import status
 import uuid
 import datetime
+
+#functions
 
 
 def isUser_member(user, project):
@@ -21,6 +23,17 @@ def isUser_admin(user, project):
         return True
 
 
+def send_notification(sender, message, recipient):
+    notification = Notifications.objects.create(
+        message=message,
+        sender=sender,
+        recipient=recipient
+    )
+    notification.save()
+    return True
+
+
+#view functions
 @api_view(['GET'])
 def view_projects(request, name):
     getUser = CustomUser.objects.get(name=name)
@@ -102,6 +115,9 @@ def add_member(request, name, project_id, user_id):
         project.members.add(member_toAdd)
         project.save()
         http_status = status.HTTP_200_OK
+        #notification
+        message = "%s Added you to %s " % (user.name, project.name)
+        send_notification(user, message, member_toAdd)
     else:
         http_status = status.HTTP_401_UNAUTHORIZED
     return Response(status=http_status)
@@ -145,6 +161,10 @@ def remove_member(request, project_id, admin_id, user_id):
             project.members.remove(user.first())
             project.save()
             event = 'You removed user from this project'
+
+            #notification
+            message = "You were removed from %s " % (project.name)
+            send_notification(admin.first(), message, user.first())
     else:
         event = 'Authorized Access Not Granted!'
 
@@ -164,6 +184,9 @@ def change_role(request, project_id, admin_id, user_id):
             project.admins.add(user.first())
             project.save()
             event = 'You Appointed user as admin of this project'
+            #notification
+            message = "You were appointed admin of %s " % (project.name)
+            send_notification(admin.first(), message, user.first())
     else:
         event = 'Authorized Access Not Granted!'
 
@@ -212,6 +235,12 @@ def edit_project(request, project_id, owner_id):
         project.name = data['cpn']
         project.description = data['cpd']
         project.save()
+
+        #notification
+        for member in project.members.all():
+            message = "%s edited some details about %s " % (owner.name, project.name)
+            send_notification(owner, message, member)
+
         serializers = ProjectSerializer(project, many=False)
         return Response(serializers.data)
 
@@ -231,6 +260,10 @@ def asign_users(request, card_id, user_id):
 
     card.asigned_To.add(user)
     card.save()
+
+    #notification
+    message = "you were asigned you to a card %s " % (card.title)
+    send_notification(user, message, user)
     http_status = status.HTTP_200_OK
     return Response(status=http_status)
 
@@ -242,6 +275,10 @@ def unasign_member(request, card_id, user_id):
 
     card.asigned_To.remove(user)
     card.save()
+
+    #notification
+    message = "you were unasigned from a card %s " % (card.title)
+    send_notification(user, message, user)
     http_status = status.HTTP_200_OK
     return Response(status=http_status)
 
@@ -257,6 +294,11 @@ def create_card(request, project_id,  user_id):
     card = Card(Manager=manager, title=data['title'], project=project,
                 labels=data['labels'], label_color=data["labelColor"], deadlineDate=date_obj)
     card.save()
+
+    #notification
+    for member in project.members.all():
+        message = "%s Created a new card" % (manager.name)
+        send_notification(manager, message, member)
 
     http_status = status.HTTP_200_OK
     return Response(status=http_status)
@@ -289,6 +331,11 @@ def edit_card(request, card_id, user_id):
         card.label_color = data["labelColor"]
         card.deadlineDate = date_obj
         card.save()
+
+            #notification
+        for member in card.asigned_To.all():
+            message = "%s edited a card you are asigned to." % (user.name)
+            send_notification(user, message, member)
         http_status = status.HTTP_200_OK
     else:
         http_status = status.HTTP_403_FORBIDDEN
@@ -320,15 +367,22 @@ def create_comment(request, user_id, card_id, project_id):
         return Response(status=status.HTTP_403_FORBIDDEN)
 
     data = request.data
-    new_comment = Comment.objects.create(comment=data['comment'], card=card, user=user)
+    new_comment = Comment.objects.create(
+        comment=data['comment'], card=card, user=user)
     new_comment.save()
+
+    #notification
+    for member in card.asigned_To.all():
+        message = "%s Commented on a card %s." % (user.name, card.title)
+        send_notification(user, message, member)
+
     serializers = CommentSerializer(new_comment, many=False)
     return Response(serializers.data)
 
 
 @api_view(['DELETE'])
 def delete_comment(request, user_id, comment_id):
-    user = CustomUser.objects.get(pk = user_id)
+    user = CustomUser.objects.get(pk=user_id)
     comment = Comment.objects.get(pk=comment_id)
 
     if comment.user == user:
