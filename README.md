@@ -7,3 +7,6 @@ and developers effectively
 
 ###                                                 Database model(postgresql)
 ![alt text](https://github.com/fredcodee/mello/blob/main/Database%20Design.jpg)
+
+##                                                    App View
+![Page Video](https://github.com/fredcodee/mello/blob/main/mellow.gif)
