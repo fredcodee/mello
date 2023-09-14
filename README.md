@@ -1,4 +1,4 @@
-## What is mellow (Currently in development*)
+## What is mellow
 - This is a project management tool and a generic workflow management app for companies/agencies to get started in minutes and start managing their projects while collaborating with their project managers 
 and developers effectively
 
